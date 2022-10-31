@@ -13,7 +13,7 @@ Listed below are the various packages we're using in our project:
 - https://github.com/kevin51jiang/react-spotify-auth
   - Library for handling spotify authentication/authorization
 
-## Resources
+### Resources
 
 Helpful links we used as inspiration for the project:
 
