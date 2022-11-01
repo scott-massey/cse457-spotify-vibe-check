@@ -1,11 +1,18 @@
 import axios from "axios"
 import cookie from "js-cookie"
 
+let spotifyAxios = axios.create({
+  baseURL: "https://api.spotify.com/v1",
+  headers: {
+    Authorization: `Bearer ${cookie.get("spotifyAuthToken")}`,
+  },
+})
+
 const getCurrentUserPlaylists = async () => {
   try {
-    const userId = getUserId()
+    const userId = await getUserId()
 
-    const res = await axios.get(
+    const res = await spotifyAxios.get(
       `https://api.spotify.com/v1/users/${userId}/playlists`
     )
     return res.data
@@ -14,20 +21,29 @@ const getCurrentUserPlaylists = async () => {
   }
 }
 
-const setAuthToken = (token) => {
-  axios.defaults.headers["Authorization"] = `Bearer ${token}`
-  getCurrentUserInfo()
-}
+const getUserId = async () => {
+  const userCookie = cookie.get("user")
 
-const getUserId = () => {
-  const userInfo = JSON.parse(cookie.get("user"))
+  if (!userCookie) {
+    await getCurrentUserInfo()
+    return getUserId()
+  }
+
+  const userInfo = JSON.parse(userCookie)
 
   return userInfo.id
 }
 
 const getCurrentUserInfo = async () => {
-  const data = await axios.get("https://api.spotify.com/v1/me")
-  cookie.set("user", JSON.stringify(data))
+  const token = cookie.get("spotifyAuthToken")
+  if (!token) return null
+  if (!spotifyAxios.defaults.headers["Authorization"]) {
+    spotifyAxios.defaults.headers["Authorization"] = `Bearer ${token}`
+  }
+
+  const data = await spotifyAxios.get("https://api.spotify.com/v1/me")
+  console.log("data:", data)
+  cookie.set("user", JSON.stringify(data.data))
 }
 
-export { getCurrentUserPlaylists, setAuthToken, getUserId, getCurrentUserInfo }
+export { getCurrentUserPlaylists, getUserId, getCurrentUserInfo }

@@ -8,67 +8,63 @@ import { useCurrentUserPlaylists } from "../../data"
 
 const sampleData = [
   {
-    title: "playlist 1",
+    name: "playlist 1",
   },
   {
-    title: "playlist 2",
+    name: "playlist 2",
   },
   {
-    title: "playlist 3",
+    name: "playlist 3",
   },
   {
-    title: "playlist 4",
+    name: "playlist 4",
   },
   {
-    title: "playlist 5",
+    name: "playlist 5",
   },
   {
-    title: "playlist 6",
+    name: "playlist 6",
   },
   {
-    title: "playlist 7",
+    name: "playlist 7",
   },
   {
-    title: "playlist 8",
+    name: "playlist 8",
   },
   {
-    title: "playlist 9",
+    name: "playlist 9",
   },
   {
-    title: "playlist 10",
+    name: "playlist 10",
   },
   {
-    title: "playlist 11",
+    name: "playlist 11",
   },
   {
-    title: "playlist 12",
+    name: "playlist 12",
   },
   {
-    title: "playlist 13",
+    name: "playlist 13",
   },
   {
-    title: "playlist 14",
+    name: "playlist 14",
   },
   {
-    title: "playlist 15",
+    name: "playlist 15",
   },
   {
-    title: "playlist 16",
+    name: "playlist 16",
   },
   {
-    title: "playlist 17",
+    name: "playlist 17",
   },
 ]
 
 function PlaylistSelector(props) {
-  console.log(props.activePlaylist)
-
   const { data: { items } = {} } = useCurrentUserPlaylists()
 
-  console.log("items", items)
-
   const getPlaylistItem = (playlist, id) => {
-    const active = props.activePlaylist === playlist.title
+    const active = props.activePlaylist === playlist.id
     return (
       <Box
         sx={{
@@ -85,17 +81,17 @@ function PlaylistSelector(props) {
             cursor: "pointer",
           },
         }}
-        onClick={() => props.setActivePlaylist(playlist.title)}
+        onClick={() => props.setActivePlaylist(playlist.id)}
         key={id}
       >
         <Box
           component="img"
           sx={{ width: "80px", height: "80px" }}
-          src={testCover}
+          src={playlist?.images[0]?.url || testCover}
           alt="playlist"
         />
         <Typography sx={{ textAlign: "center", overflowX: "none" }}>
-          {playlist.title}
+          {playlist.name}
         </Typography>
       </Box>
     )
@@ -116,7 +112,7 @@ function PlaylistSelector(props) {
       }}
     >
       {/* <Box sx={{height: "100px", backgroundColor: "lightblue"}}> */}
-      {sampleData.map((item, id) => getPlaylistItem(item, id))}
+      {(items || sampleData).map((item, id) => getPlaylistItem(item, id))}
 
       {/* </Box> */}
     </Box>

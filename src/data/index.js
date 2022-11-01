@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getCurrentUserPlaylists, setAuthToken, getUserId } from "./api"
+import { getCurrentUserPlaylists, getUserId, getCurrentUserInfo } from "./api"
 
 const useCurrentUserPlaylists = () => {
   return useQuery({
@@ -8,4 +8,4 @@ const useCurrentUserPlaylists = () => {
   })
 }
 
-export { setAuthToken, getUserId, useCurrentUserPlaylists }
+export { getUserId, getCurrentUserInfo, useCurrentUserPlaylists }
