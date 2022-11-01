@@ -30,6 +30,9 @@ import MenuBookIcon from "@mui/icons-material/MenuBook"
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary"
 import GitHubIcon from "@mui/icons-material/GitHub"
 
+// Data
+import { setAuthToken } from "../data"
+
 const navList = (
   <React.Fragment>
     <ListItemButton>
@@ -97,13 +100,16 @@ const NavigationWrapper = ({ children, ...props }) => {
               Spotify Vibe Check
             </Typography>
             <SpotifyAuth
-              redirectUri={`${window.location.origin}/spotify-callback`}
+              redirectUri={`${window.location.origin}/`}
               clientID="1a62dbf1e301488eb75e500e21603a0d"
               scopes={[
                 Scopes.playlistReadPrivate,
                 Scopes.userReadPrivate,
                 Scopes.playlistReadCollaborative,
               ]}
+              onAccessToken={(token) => {
+                setAuthToken(token)
+              }}
             />
           </Toolbar>
         </AppBar>
