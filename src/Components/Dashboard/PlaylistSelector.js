@@ -66,7 +66,10 @@ function PlaylistSelector(props) {
 		const active = props.activePlaylist === playlist.title
 		return (
 			<Box sx={{display: "flex", flexDirection: "column", alignItems: "center", height: "100px", width: "120px", maxWidth: "120px", 
-				marginLeft: "10px", marginRight: "10px", backgroundColor: (active ? "lightblue" : "none")}}
+				marginLeft: "10px", marginRight: "10px", backgroundColor: (active ? "lightblue" : "none"),
+				'&:hover': {
+					cursor: "pointer",
+				 },}}
 				onClick={() => props.setActivePlaylist(playlist.title)}
 				>
 				<Box 
