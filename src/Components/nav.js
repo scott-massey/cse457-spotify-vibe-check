@@ -18,6 +18,7 @@ import List from "@mui/material/List"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
+import Button from "@mui/material/Button"
 
 // Layout
 import Box from "@mui/material/Box"
@@ -31,7 +32,7 @@ import VideoLibraryIcon from "@mui/icons-material/VideoLibrary"
 import GitHubIcon from "@mui/icons-material/GitHub"
 
 // Data
-import { setAuthToken } from "../data"
+import { logout, useGetCurrentUserInfo } from "../data"
 
 const navList = (
   <React.Fragment>
@@ -68,6 +69,8 @@ const NavigationWrapper = ({ children, ...props }) => {
     setOpen(!open)
   }
 
+  const { data: user } = useGetCurrentUserInfo()
+
   return (
     <div>
       <Box sx={{ display: "flex" }}>
@@ -99,15 +102,21 @@ const NavigationWrapper = ({ children, ...props }) => {
             >
               Spotify Vibe Check
             </Typography>
-            <SpotifyAuth
-              redirectUri={`${window.location.origin}/spotify-callback`}
-              clientID="1a62dbf1e301488eb75e500e21603a0d"
-              scopes={[
-                Scopes.playlistReadPrivate,
-                Scopes.userReadPrivate,
-                Scopes.playlistReadCollaborative,
-              ]}
-            />
+            {user ? (
+              <Button variant="contained" onClick={logout}>
+                Logout
+              </Button>
+            ) : (
+              <SpotifyAuth
+                redirectUri={`${window.location.origin}/spotify-callback`}
+                clientID="1a62dbf1e301488eb75e500e21603a0d"
+                scopes={[
+                  Scopes.playlistReadPrivate,
+                  Scopes.userReadPrivate,
+                  Scopes.playlistReadCollaborative,
+                ]}
+              />
+            )}
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

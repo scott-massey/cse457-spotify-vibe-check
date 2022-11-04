@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom"
 
-import { Dashboard } from "./Components/Dashboard"
-import { ProcessBook } from "./Components/ProcessBook"
-import { VideoDemo } from "./Components/VideoDemo"
-import { SpotifyCallback } from "./Components/SpotifyCallback"
+import { Dashboard } from "./components/Dashboard"
+import { ProcessBook } from "./components/ProcessBook"
+import { VideoDemo } from "./components/VideoDemo"
+import { SpotifyCallback } from "./components/SpotifyCallback"
 
 export const router = createBrowserRouter([
   { path: "/", element: <Dashboard /> },

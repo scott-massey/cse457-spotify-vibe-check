@@ -8,12 +8,35 @@ let spotifyAxios = axios.create({
   },
 })
 
+const getTracksFeatures = async (tracks) => {
+  const trackIds = tracks.map((track) => track.id).join(",")
+  const { data } = await spotifyAxios.get(`/audio-features?ids=${trackIds}`)
+  return data.audio_features
+}
+
+const getPlaylist = async (playlistId) => {
+  if (!playlistId) return null
+  try {
+    const res = await spotifyAxios.get(`/playlists/${playlistId}`)
+    return res.data
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 const getCurrentUserPlaylists = async () => {
   try {
     const userId = await getUserId()
 
+    if (!userId) return []
+
     const res = await spotifyAxios.get(
-      `https://api.spotify.com/v1/users/${userId}/playlists`
+      `https://api.spotify.com/v1/users/${userId}/playlists`,
+      {
+        params: {
+          limit: 50,
+        },
+      }
     )
     return res.data
   } catch (err) {
@@ -25,8 +48,9 @@ const getUserId = async () => {
   const userCookie = cookie.get("user")
 
   if (!userCookie) {
-    await getCurrentUserInfo()
-    return getUserId()
+    if (!cookie.get("spotifyAuthToken")) return null
+    const user = await getCurrentUserInfo()
+    return user?.id
   }
 
   const userInfo = JSON.parse(userCookie)
@@ -41,9 +65,23 @@ const getCurrentUserInfo = async () => {
     spotifyAxios.defaults.headers["Authorization"] = `Bearer ${token}`
   }
 
-  const data = await spotifyAxios.get("https://api.spotify.com/v1/me")
-  console.log("data:", data)
+  const data = await spotifyAxios.get("/me")
   cookie.set("user", JSON.stringify(data.data))
+  return data.data
 }
 
-export { getCurrentUserPlaylists, getUserId, getCurrentUserInfo }
+const logout = async () => {
+  cookie.remove("spotifyAuthToken")
+  cookie.remove("user")
+
+  window.location.href = "/"
+}
+
+export {
+  getCurrentUserPlaylists,
+  getUserId,
+  getCurrentUserInfo,
+  logout,
+  getPlaylist,
+  getTracksFeatures,
+}

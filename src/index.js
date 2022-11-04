@@ -8,7 +8,7 @@ import "./page-styles.css"
 import { router } from "./routes"
 
 // Imported components
-import { NavigationWrapper } from "./Components/nav"
+import { NavigationWrapper } from "./components/nav"
 
 // MUI Components
 import { createTheme, ThemeProvider } from "@mui/material/styles"

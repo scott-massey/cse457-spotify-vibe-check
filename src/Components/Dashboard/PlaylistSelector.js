@@ -1,10 +1,10 @@
 import React from "react"
 import { Box, Typography } from "@mui/material"
 import PropTypes from "prop-types"
-import testCover from "../../Resources/img/testCover1.jpg"
+import testCover from "../../resources/img/testCover1.jpg"
 
 // Data
-import { useCurrentUserPlaylists } from "../../data"
+import { useCurrentUserPlaylists, useGetPlaylist } from "../../data"
 
 const sampleData = [
   {
@@ -60,11 +60,12 @@ const sampleData = [
   },
 ]
 
-function PlaylistSelector(props) {
-  const { data: { items } = {} } = useCurrentUserPlaylists()
+function PlaylistSelector({ activePlaylist, setActivePlaylist }) {
+  const { data: { items = [] } = {} } = useCurrentUserPlaylists()
+  const { data: playlist } = useGetPlaylist(activePlaylist)
 
   const getPlaylistItem = (playlist, id) => {
-    const active = props.activePlaylist === playlist.id
+    const active = activePlaylist === playlist.id
     return (
       <Box
         sx={{
@@ -81,13 +82,17 @@ function PlaylistSelector(props) {
             cursor: "pointer",
           },
         }}
-        onClick={() => props.setActivePlaylist(playlist.id)}
+        onClick={() => {
+          setActivePlaylist(playlist.id)
+        }}
         key={id}
       >
         <Box
           component="img"
           sx={{ width: "80px", height: "80px" }}
-          src={playlist?.images[0]?.url || testCover}
+          src={
+            (playlist?.images?.length && playlist?.images[0]?.url) || testCover
+          }
           alt="playlist"
         />
         <Typography sx={{ textAlign: "center", overflowX: "none" }}>
