@@ -3,6 +3,7 @@ import React from "react"
 import * as d3 from "d3"
 
 const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
+	console.log(featuresSummary)
 
   const renderChart = (svg) => {
     const margin = { top: 40, right: 0, bottom: 60, left: 60 }
@@ -194,7 +195,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
     //data length is used as a trigger to re render chartRenderFn when length of data changes
   }
 
-  const ref = useD3(renderChart, [loading])
+  const ref = useD3(renderChart, [featuresSummary])
 
 //   console.log("ref:", ref)
 

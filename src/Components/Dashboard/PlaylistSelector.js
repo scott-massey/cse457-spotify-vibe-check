@@ -6,8 +6,14 @@ import * as d3 from "d3"
 
 
 // Data
-import { useCurrentUserPlaylists, useGetPlaylist, useGetTracksFeatures } from "../../data"
+import { useCurrentUserPlaylists, useGetPlaylist, useGetTracksFeatures, useGetCurrentUserInfo } from "../../data"
 import { getPlaylist, getTracksFeatures } from '../../data/api'
+import { CompareSharp } from "@mui/icons-material"
+import { obamaAlbums } from "../../data/obama/albums"
+import { obamaTracks } from "../../data/obama/tracks"
+import { obamaTrackFeatures } from "../../data/obama/trackFeatures"
+
+const featuresKeys = ['acousticness', 'danceability', 'energy', 'instrumentalness', 'loudness', 'tempo', 'valence']
 
 const sampleData = [
   {
@@ -65,7 +71,7 @@ const sampleData = [
 
 function PlaylistSelector({ activePlaylist, setActivePlaylist, setLoadingPlaylist, setFeaturesSummary }) {
   const { data: { items = [] } = {} } = useCurrentUserPlaylists()
-
+  const { data: user } = useGetCurrentUserInfo()
 
 	// from https://stackoverflow.com/questions/59516720/return-summary-statistics-from-multiple-arrays
 	function calculateValues(d, key){
@@ -95,20 +101,40 @@ function PlaylistSelector({ activePlaylist, setActivePlaylist, setLoadingPlaylis
 	  }
 
 
-	async function HandleClick(playlistId) { 
+	async function HandleClick(playlistId) {
+		// var playlist = pl
+		// if (user) {
+		// 	playlist = await getPlaylist(pl.id)
+		// } 
 		setLoadingPlaylist(true)
 
+
 		const playlist = await getPlaylist(playlistId)
-		// console.log(playlist)
 		const trackFeatures = await getTracksFeatures(playlist.tracks.items)
 		
-		const featuresKeys = ['danceability', 'energy', 'valence']
 		const featuresSummary = featuresKeys.map(key => calculateValues(trackFeatures, key))
 		// console.log(featuresSummary)
 
 		setActivePlaylist(playlist)
 		setFeaturesSummary(featuresSummary)
 		setLoadingPlaylist(false)
+
+	}
+
+	async function HandleClickObama(playlist) {
+		setLoadingPlaylist(true)
+		// console.log(playlist)
+		// console.log(playlist.tracks.items)
+
+		const tracks = obamaTracks[playlist.id]
+		const trackFeatures = obamaTrackFeatures[playlist.id]
+		console.log(trackFeatures)
+		const featuresSummary = featuresKeys.map(key => calculateValues(trackFeatures, key))
+
+		setActivePlaylist(playlist)
+		setFeaturesSummary(featuresSummary)
+		setLoadingPlaylist(false)
+
 
 	}
 
@@ -131,7 +157,8 @@ function PlaylistSelector({ activePlaylist, setActivePlaylist, setLoadingPlaylis
           },
         }}
         onClick={() => {
-          HandleClick(playlist.id)
+			if (user) HandleClick(playlist.id)
+			else HandleClickObama(playlist)
         }}
         key={id}
       >
@@ -165,7 +192,8 @@ function PlaylistSelector({ activePlaylist, setActivePlaylist, setLoadingPlaylis
       }}
     >
       {/* <Box sx={{height: "100px", backgroundColor: "lightblue"}}> */}
-      {(items || sampleData).map((item, id) => getPlaylistItem(item, id))}
+	  
+      {((user) ? items : obamaAlbums).map((item, id) => getPlaylistItem(item, id))}
 
       {/* </Box> */}
     </Box>
