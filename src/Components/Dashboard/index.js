@@ -14,12 +14,14 @@ import PlaylistSelector from "./PlaylistSelector"
 import IQR from "./iqrVis"
 
 //test data for vis
-const data = [{ avg: 0.2 }, { avg: -0.4 }, { avg: 0.6 }, { avg: -0.1 }]
+const data = [{ mean: 0.2 }, { mean: -0.4 }, { mean: 0.6 }, { mean: -0.1 }]
 
 const Dashboard = (props) => {
   const [activePlaylist, setActivePlaylist] = useState(null)
+  const [loadingPlaylist, setLoadingPlaylist] = useState(false)
+  const [featuresSummary, setFeaturesSummary] = useState(null)
 
-  console.error("rendering dashboard")
+//   console.error("rendering dashboard")
 
   return (
     <React.Fragment>
@@ -38,10 +40,12 @@ const Dashboard = (props) => {
           <PlaylistSelector
             activePlaylist={activePlaylist}
             setActivePlaylist={setActivePlaylist}
+			setLoadingPlaylist={setLoadingPlaylist}
+			setFeaturesSummary={setFeaturesSummary}
           />
         </Box>
       </Container>
-      <IQR data={data} />
+      <IQR data={data} featuresSummary={featuresSummary} activePlaylist={activePlaylist} loading={loadingPlaylist}/>
     </React.Fragment>
   )
 }

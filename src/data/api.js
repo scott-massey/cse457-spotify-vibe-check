@@ -9,7 +9,7 @@ let spotifyAxios = axios.create({
 })
 
 const getTracksFeatures = async (tracks) => {
-  const trackIds = tracks.map((track) => track.id).join(",")
+  const trackIds = tracks.map((item) => item.track.id).join(",")
   const { data } = await spotifyAxios.get(`/audio-features?ids=${trackIds}`)
   return data.audio_features
 }

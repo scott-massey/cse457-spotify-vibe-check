@@ -2,12 +2,14 @@ import { useD3 } from "../hooks/useD3"
 import React from "react"
 import * as d3 from "d3"
 
-const IQR = ({ data }) => {
+const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
+
   const renderChart = (svg) => {
     const margin = { top: 40, right: 0, bottom: 60, left: 60 }
 
     const width = 800
     const height = 300
+
 
     svg.select(".plot-area").append("text").text("TEST TEST TEST from vis")
 
@@ -48,14 +50,15 @@ const IQR = ({ data }) => {
         })
       )
 
-    let circle = svg.select(".plot-area").selectAll("circle").data(data)
+	  console.log(featuresSummary)
+    let circle = svg.select(".plot-area").selectAll("circle").data(featuresSummary)
 
     //Draw circles for average value
     circle
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        return width / 2 + 100 * d.avg
+        return width / 2 + 100 * d.mean
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -73,7 +76,7 @@ const IQR = ({ data }) => {
     //     .attr("x",d3.select(this)._groups[0][0].cx.baseVal.value -8)
     //     .attr("y",d3.select(this)._groups[0][0].cy.baseVal.value - 15)
     //     .style("font-size",10)
-    //     .text(d.avg);
+    //     .text(d.mean);
     // })
     // .on('mouseout', function (d, i) {
     //     let label = d3.select("text.avgLabel");
@@ -191,11 +194,27 @@ const IQR = ({ data }) => {
     //data length is used as a trigger to re render chartRenderFn when length of data changes
   }
 
-  const ref = useD3(renderChart, [data.length])
+  const ref = useD3(renderChart, [loading])
 
-  console.log("ref:", ref)
+//   console.log("ref:", ref)
 
+  if (loading) {
+	return(
+		<div>
+			loading...
+		</div>
+	)
+  }
+  if (!featuresSummary) {
+	return(
+		<div>
+			select a playlist to get started!
+		</div>
+	)
+  }
   return (
+	<>
+	<p>{(activePlaylist) ? `${activePlaylist.name}` : ''}</p>
     <svg
       style={{
         height: 500,
@@ -210,6 +229,7 @@ const IQR = ({ data }) => {
       <g className="line-area" />
       <g className="circle-area" />
     </svg>
+	</>
   )
 }
 

@@ -30,6 +30,8 @@ const useGetPlaylist = (playlistId) => {
 }
 
 const useGetTracksFeatures = (tracks) => {
+	// if(!tracks) return
+	console.log(tracks)
   return useQuery({
     queryKey: ["tracksFeatures", tracks.map((track) => track.id).join(",")],
     queryFn: () => getTracksFeatures(tracks),
