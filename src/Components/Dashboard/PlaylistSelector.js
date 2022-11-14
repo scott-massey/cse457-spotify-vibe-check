@@ -1,7 +1,7 @@
 import React from "react"
 import { Box, Typography } from "@mui/material"
 import PropTypes from "prop-types"
-import testCover from "../../resources/img/testCover1.jpg"
+import testCover from "../../Resources/img/testCover1.jpg"
 
 // Data
 import { useCurrentUserPlaylists, useGetPlaylist } from "../../data"
