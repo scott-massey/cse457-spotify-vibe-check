@@ -14,20 +14,15 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
 
     svg.select(".plot-area").append("text").text("TEST TEST TEST from vis")
 
-    // SVG drawing area
-    // vis.svg = d3.select("#" + vis.parentElement).append("svg")
-    //     .attr("width", vis.width + vis.margin.left + vis.margin.right)
-    //     .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
-    //     .attr("class","nlpChart");
 
-    // //text g
-    // vis.svg.append("g").attr("class","textContainer");
+    //text g
+    svg.append("g").attr("class","textContainer");
 
-    // //line container
-    // vis.svg.append("g").attr("class","lineContainer");
+    //line container
+    svg.append("g").attr("class","lineContainer");
 
-    // //circle container
-    // vis.svg.append("g").attr("class","circleContainer");
+    //circle container
+    svg.append("g").attr("class","circleContainer");
 
     //circle avg label container
     svg
@@ -36,7 +31,15 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .attr("class", "avgLabel")
       .style("opacity", 0)
       .attr("x", "50%")
-      .attr("y", 50)
+      .attr("y", 50);
+
+      // svg
+      // .select(".plot-area")
+      // .append("text")
+      // .attr("class", "avgLabel")
+      // .style("opacity", 0)
+      // .attr("x", "50%")
+      // .attr("y", 50);
 
     // Scales and axes
     const x = d3
@@ -59,6 +62,9 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .enter()
       .append("circle")
       .attr("cx", function (d) {
+        if(d.key == "loudness") return width/2 + 15;
+        if(d.key == "tempo") return width/2 +24;
+
         return width / 2 + 100 * d.mean
       })
       .attr("cy", function (d, i) {
@@ -69,128 +75,131 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .style("fill", "blue")
       .style("opacity", 0.6)
       .attr("class", "avgCircle")
-    // .on('mouseover', function (event,d) {
-    //     let label = d3.select("text.avgLabel");
-    //     label
-    //     .style("opacity",.8)
-    //     .style("fill","blue")
-    //     .attr("x",d3.select(this)._groups[0][0].cx.baseVal.value -8)
-    //     .attr("y",d3.select(this)._groups[0][0].cy.baseVal.value - 15)
-    //     .style("font-size",10)
-    //     .text(d.mean);
-    // })
-    // .on('mouseout', function (d, i) {
-    //     let label = d3.select("text.avgLabel");
-    //     label.style("opacity",0);
-    // });
+      .on('mouseover', function (event,d) {
+          let label = d3.select("text.avgLabel");
 
-    // //draw circles for low value
-    //         circle.enter().append("circle")
-    //         .attr("cx", function(d) { return vis.width/2 + (100*d.low); })
-    //         .attr("cy", function(d,i) { return 30 + 30*i; })
-    //         .merge(circle)
-    //         .attr("r", 10)
-    //         .style("fill","red")
-    //         .style("opacity",.6)
-    //         .attr("class", "lowCircle")
-    //         .on("click",function(){
-    //             updateWordCloud(d3.select(this)._groups[0][0].__data__,"neg");
+          label
+          .style("opacity",.8)
+          .style("fill","blue")
+          .attr("x",d3.select(this)._groups[0][0].cx.baseVal.value -8)
+          .attr("y",d3.select(this)._groups[0][0].cy.baseVal.value - 15)
+          .style("font-size",10)
+          .text(d.mean);
+      })
+      .on('mouseout', function (d, i) {
+          let label = d3.select("text.avgLabel");
+          label.style("opacity",0);
+      });
 
-    //         })
-    //         .on('mouseover', function (event,d) {
-    //             let label = d3.select("text.avgLabel");
-    //             label
-    //             .style("opacity",.8)
-    //             .attr("x",d3.select(this)._groups[0][0].cx.baseVal.value -8)
-    //             .attr("y",d3.select(this)._groups[0][0].cy.baseVal.value - 15)
-    //             .style("fill","red")
-    //             .style("font-size",10)
-    //             .text(d.low);
-    //         })
-    //         .on('mouseout', function (d, i) {
-    //             let label = d3.select("text.avgLabel");
-    //             label.style("opacity",0);
-    //         });
+    //draw circles for low value
+      circle.enter().append("circle")
+      .attr("cx", function(d) { 
+        if(d.key == "tempo") return width/2 -.3;
+        if(d.key == "loudness") return width/2 -.5;
+        return width/2 + (100*d.min); })
+      .attr("cy", function(d,i) { return 30 + 30*i; })
+      .merge(circle)
+      .attr("r", 10)
+      .style("fill","red")
+      .style("opacity",.6)
+      .attr("class", "lowCircle")
+      .on('mouseover', function (event,d) {
+          let label = d3.select("text.avgLabel");
+          label
+          .style("opacity",.8)
+          .attr("x",d3.select(this)._groups[0][0].cx.baseVal.value -8)
+          .attr("y",d3.select(this)._groups[0][0].cy.baseVal.value - 15)
+          .style("fill","red")
+          .style("font-size",10)
+          .text(d.min);
+      })
+      .on('mouseout', function (d, i) {
+          let label = d3.select("text.avgLabel");
+          label.style("opacity",0);
+      });
 
-    // //draw circles for high value
-    //         circle.enter().append("circle")
-    //         .attr("cx", function(d) { return vis.width/2 + Math.abs(100*d.high); })
-    //         .attr("cy", function(d,i) { return 30 + 30*i; })
-    //         .merge(circle)
-    //         .attr("r", 10)
-    //         .style("fill","green")
-    //         .style("opacity",.6)
-    //         .attr("class", "highCircle")
-    //         .on("click",function(){
-    //             console.log(d3.select(this)._groups[0][0].__data__.posText);
-    //             updateWordCloud(d3.select(this)._groups[0][0].__data__,"pos");
-
-    //         })
-    //         .on('mouseover', function (event,d) {
-    //             let label = d3.select("text.avgLabel");
-    //             label
-    //             .style("opacity",.8)
-    //             .attr("x",d3.select(this)._groups[0][0].cx.baseVal.value -8)
-    //             .attr("y",d3.select(this)._groups[0][0].cy.baseVal.value - 15)
-    //             .style("font-size",10)
-    //             .style("fill","green")
-    //             .text(d.high);
-    //         })
-    //         .on('mouseout', function (d, i) {
-    //             let label = d3.select("text.avgLabel");
-    //             label.style("opacity",0);
-    //         });
+    //draw circles for high value
+        circle.enter().append("circle")
+        .attr("cx", function(d) { 
+          if(d.key == "tempo") return width/2 + Math.abs(d.max)
+          return width/2 + Math.abs(100*d.max); })
+        .attr("cy", function(d,i) { return 30 + 30*i; })
+        .merge(circle)
+        .attr("r", 10)
+        .style("fill","green")
+        .style("opacity",.6)
+        .attr("class", "highCircle")
+        .on('mouseover', function (event,d) {
+            let label = d3.select("text.avgLabel");
+            label
+            .style("opacity",.8)
+            .attr("x",d3.select(this)._groups[0][0].cx.baseVal.value -8)
+            .attr("y",d3.select(this)._groups[0][0].cy.baseVal.value - 15)
+            .style("font-size",10)
+            .style("fill","green")
+            .text(d.max);
+        })
+        .on('mouseout', function (d, i) {
+            let label = d3.select("text.avgLabel");
+            label.style("opacity",0);
+        });
 
     //     // Exit
     circle.exit().remove()
 
-    //     let iqrLine = d3.select("svg.nlpChart").select("g.lineContainer").selectAll("line").data(data);
+        let iqrLine = svg.select(".plot-area").selectAll("line").data(featuresSummary);
 
-    // //draw line connecting circles by hori plane
-    //     iqrLine.enter().append("line")
-    //     .attr('x1', function(d){ return vis.width/2 - Math.abs(100*d.low)})
-    //     .attr('y1', function(d,i){return i*30 + 30})
-    //     .attr('x2', function(d){ return vis.width/2 + Math.abs(100*d.high)})
-    //     .attr('y2', function(d,i){ return i*30 + 30})
-    //     .merge(iqrLine)
-    //     .attr("stroke", "black")
-    //     .attr("stroke-width", 2)
-    //     .style("stroke-opacity", 0.5)
-    //     .attr("fill", "none");
+    //draw line connecting circles by hori plane
+        iqrLine.enter().append("line")
+        .attr('x1', function(d,i){
+          if(i == 5) return 0;
+          if(i == 4) return 0;
+           return width/2 + (100*d.min)})
+        .attr('y1', function(d,i){return i*30 + 30})
+        .attr('x2', function(d,i){ 
+          if(i == 5) return 0;
+          if(i == 4) return 0;
+          return width/2 + Math.abs(100*d.max)})
+        .attr('y2', function(d,i){ return i*30 + 30})
+        .merge(iqrLine)
+        .attr("stroke", "black")
+        .attr("stroke-width", 2)
+        .style("stroke-opacity", 0.5)
+        .attr("fill", "none");
 
-    //     iqrLine.exit().remove();
+        iqrLine.exit().remove();
 
-    // //draw avg line down middle
-    //     d3.select("svg.nlpChart").append('line')
-    //     .attr('x1', function(d){ return vis.width/2})
-    //     .attr('y1', 0)
-    //     .attr('x2', function(d){ return vis.width/2})
-    //     .attr('y2', function(d){ return vis.data.length * 30 + 30})
-    //     .attr("stroke", "blue")
-    //     .attr("stroke-width", 2)
-    //     .attr("stroke-dasharray",5.5)
-    //     .attr("fill", "none");
+    //draw avg line down middle
+        svg.select(".plot-area").append('line')
+        .attr('x1', function(d){ return width/2 + 50})
+        .attr('y1', 30)
+        .attr('x2', function(d){ return width/2 + 50})
+        .attr('y2', function(d){ return (data.length + 3)* 30 + 30})
+        .attr("stroke", "blue")
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray",5.5)
+        .attr("fill", "none");
 
-    // //middle line label
-    //     d3.select("svg.nlpChart").append("text")
-    //     .attr("x", vis.width/2)
-    //     .attr("y", vis.data.length*30 + 100)
-    //     .attr("transform", "translate(-50, -50)")
-    //     .style("font-size",10)
-    //     .text("Average Sentiment Score");
+    //middle line label
+        svg.select(".plot-area").append("text")
+        .attr("x", width/2 + 50)
+        .attr("y", (data.length + 5)*30 + 40)
+        .attr("transform", "translate(-50, -50)")
+        .style("font-size",10)
+        .text("Average Attribute Value");
 
-    //   let text = d3.select("svg.nlpChart").select("g.textContainer").selectAll("text").data(data);
+      let text = svg.select(".plot-area").selectAll("text.label").data(featuresSummary);
 
-    // //add story titles
-    //   text.enter().append("text")
-    //   .attr("x", 0)
-    //   .attr("y", function(d,i){return i*30 + 37})
-    //   .text(function(d,i){return d.Title})
-    //   .merge(text)
-    //   .style("font-size",10)
-    //   .style("font-weight","bold");
+    //add story titles
+      text.enter().append("text")
+      .attr("x", 30)
+      .attr("y", function(d,i){return i*30 + 35})
+      .text(function(d,i){return d.key})
+      .merge(text)
+      .style("font-size",10)
+      .style("font-weight","bold");
 
-    //   text.exit().remove();
+      text.exit().remove();
 
     //data length is used as a trigger to re render chartRenderFn when length of data changes
   }
