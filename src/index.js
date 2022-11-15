@@ -1,8 +1,14 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { RouterProvider } from "react-router-dom"
+import { RouterProvider, BrowserRouter, Routes, Route } from "react-router-dom"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import "./page-styles.css"
+import { useNavigate } from "react-router-dom"
+
+import { Dashboard } from "./Components/Dashboard"
+import ProcessBook from "./Components/ProcessBook"
+import { VideoDemo } from "./Components/VideoDemo"
+import { SpotifyCallback } from "./Components/SpotifyCallback"
 
 // Routes
 import { router } from "./routes"
@@ -18,12 +24,19 @@ const queryClient = new QueryClient()
 const App = () => {
   const mdTheme = createTheme()
 
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={mdTheme}>
-        <NavigationWrapper>
-          <RouterProvider router={router} />
-        </NavigationWrapper>
+		<BrowserRouter>
+        <NavigationWrapper />
+		<Routes>
+			<Route path="/process-book" element={<ProcessBook />} />
+			<Route path="/video-demo" element={<VideoDemo />}/>
+			<Route path="/spotify-callback" element={<SpotifyCallback />} />
+			<Route exact path="/" element={<Dashboard />} />
+		</Routes>
+		</BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>
   )
