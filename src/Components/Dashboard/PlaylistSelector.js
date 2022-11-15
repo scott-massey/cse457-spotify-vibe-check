@@ -143,7 +143,7 @@ function PlaylistSelector({ activePlaylist, setActivePlaylist, setLoadingPlaylis
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          height: "100px",
+          height: "150px",
           width: "120px",
           maxWidth: "120px",
           marginLeft: "10px",
@@ -161,7 +161,7 @@ function PlaylistSelector({ activePlaylist, setActivePlaylist, setLoadingPlaylis
       >
         <Box
           component="img"
-          sx={{ width: "80px", height: "80px" }}
+          sx={{ width: "80px", height: "80px"}}
           src={
             (playlist?.images?.length && playlist?.images[0]?.url) || testCover
           }
