@@ -27,13 +27,13 @@ const Dashboard = (props) => {
     <React.Fragment>
       <CssBaseline />
       <Container>
-        <Box sx={{ width: "250px", height: "64px" }} />
+        <Box sx={{ width: "250px", height: "64px",  }} />
         <Box
           sx={{
             display: "flex",
             flexGrow: 1,
             height: "100%",
-            minHeight: "500px",
+            // minHeight: "500px",
             width: "100%",
           }}
         >

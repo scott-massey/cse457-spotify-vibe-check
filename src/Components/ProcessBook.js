@@ -14,12 +14,7 @@ function ProcessBook() {
 	console.log('here')
 	return (
 		<React.Fragment>
-		<Box sx={{ paddingLeft: "32px", paddingRight: "32px"}} >
-		<div className="grid-container" id="header-div">
-			<div className="grid-item">
-				<h1>CSE 457 Project Proposal</h1>
-			</div>
-		</div>
+		<Box sx={{ paddingLeft: "32px", paddingRight: "32px", paddingTop: "60px"}} >
 
 		<div>
 			<h2>Basic Info</h2>

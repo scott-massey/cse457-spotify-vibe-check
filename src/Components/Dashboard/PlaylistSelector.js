@@ -102,10 +102,7 @@ function PlaylistSelector({ activePlaylist, setActivePlaylist, setLoadingPlaylis
 
 
 	async function HandleClick(playlistId) {
-		// var playlist = pl
-		// if (user) {
-		// 	playlist = await getPlaylist(pl.id)
-		// } 
+
 		setLoadingPlaylist(true)
 
 
@@ -128,7 +125,7 @@ function PlaylistSelector({ activePlaylist, setActivePlaylist, setLoadingPlaylis
 
 		const tracks = obamaTracks[playlist.id]
 		const trackFeatures = obamaTrackFeatures[playlist.id]
-		console.log(trackFeatures)
+		// console.log(trackFeatures)
 		const featuresSummary = featuresKeys.map(key => calculateValues(trackFeatures, key))
 
 		setActivePlaylist(playlist)
@@ -183,12 +180,13 @@ function PlaylistSelector({ activePlaylist, setActivePlaylist, setLoadingPlaylis
         display: "flex",
         flexDirection: "row",
         flexGrow: 1,
-        height: "200px",
+        minHeight: "250px",
         justifyContent: "flex-start",
         alignItems: "center",
         paddingLeft: "10px",
         paddingRight: "10px",
         overflowX: "auto",
+		// overflowY: "hidden",
       }}
     >
       {/* <Box sx={{height: "100px", backgroundColor: "lightblue"}}> */}

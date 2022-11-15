@@ -46,7 +46,7 @@ const NavigationWrapper = ({ children, ...props }) => {
   const { data: user } = useGetCurrentUserInfo()
 
   return (
-    <div sx={{backgroundColor: "yellow"}}>
+    <div >
       <Box sx={{  display: "flex" }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
