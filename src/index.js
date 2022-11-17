@@ -1,46 +1,40 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { RouterProvider, BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import "./page-styles.css"
-import { useNavigate } from "react-router-dom"
-import { Box } from '@mui/material'
+import { Box } from "@mui/material"
 
 import { Dashboard } from "./Components/Dashboard"
 import ProcessBook from "./Components/ProcessBook"
 import { VideoDemo } from "./Components/VideoDemo"
 import { SpotifyCallback } from "./Components/SpotifyCallback"
 
-// Routes
-import { router } from "./routes"
-
 // Imported components
 import { NavigationWrapper } from "./Components/nav"
 
 // MUI Components
 import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { ClassNames } from "@emotion/react"
 
 const queryClient = new QueryClient()
 
 const App = () => {
   const mdTheme = createTheme()
 
-
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={mdTheme}>
-		<BrowserRouter>
-        <NavigationWrapper />
-		<Box sx={{paddingLeft: "250px", marginTop: "-270px" }}>
-			<Routes>
-				<Route path="/process-book" element={<ProcessBook />} />
-				<Route path="/video-demo" element={<VideoDemo />}/>
-				<Route path="/spotify-callback" element={<SpotifyCallback />} />
-				<Route exact path="/" element={<Dashboard />} />
-			</Routes>
-		</Box>
-		</BrowserRouter>
+        <BrowserRouter>
+          <NavigationWrapper />
+          <Box sx={{ paddingLeft: "250px", marginTop: "-270px" }}>
+            <Routes>
+              <Route path="/process-book" element={<ProcessBook />} />
+              <Route path="/video-demo" element={<VideoDemo />} />
+              <Route path="/spotify-callback" element={<SpotifyCallback />} />
+              <Route exact path="/" element={<Dashboard />} />
+            </Routes>
+          </Box>
+        </BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>
   )
