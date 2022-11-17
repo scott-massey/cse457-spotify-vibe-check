@@ -27,25 +27,53 @@ const Dashboard = (props) => {
     <React.Fragment>
       <CssBaseline />
       <Container>
-        <Box sx={{ width: "250px", height: "64px",  }} />
+        <Box sx={{ width: "250px", height: "64px",  }} /> 
         <Box
           sx={{
             display: "flex",
+			flexDirection: "column",
             flexGrow: 1,
             height: "100%",
             // minHeight: "500px",
             width: "100%",
           }}
         >
-          <PlaylistSelector
-            activePlaylist={activePlaylist}
-            setActivePlaylist={setActivePlaylist}
-			setLoadingPlaylist={setLoadingPlaylist}
-			setFeaturesSummary={setFeaturesSummary}
-          />
+			<Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
+				<PlaylistSelector
+					activePlaylist={activePlaylist}
+					setActivePlaylist={setActivePlaylist}
+					setLoadingPlaylist={setLoadingPlaylist}
+					setFeaturesSummary={setFeaturesSummary}
+				/>
+			</Box>
+			<Box sx={{display: "flex", flexDirection: "row"}}>
+				<Box sx={{display: "flex", flexDirection: "column", height: "100%"}}>
+					<Box sx={{height: "100%"}}>
+						<IQR data={data} featuresSummary={featuresSummary} activePlaylist={activePlaylist} loading={loadingPlaylist}/>
+					</Box>
+					<Box sx={{height: "100%"}}>
+						<p>radial chart goes here</p>
+					</Box>
+
+				</Box>
+				<Box sx={{display: "flex", flexDirection: "column", height: "100%"}}>
+					<p>song selector goes here</p>
+				</Box>
+			</Box>
+
+			<Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
+				<Box>
+					<p>genre bubble chart</p>
+				</Box>
+				<Box>
+					<p>artist bubble chart</p>
+				</Box>
+
+			</Box>
+
         </Box>
+
       </Container>
-      <IQR data={data} featuresSummary={featuresSummary} activePlaylist={activePlaylist} loading={loadingPlaylist}/>
     </React.Fragment>
   )
 }
