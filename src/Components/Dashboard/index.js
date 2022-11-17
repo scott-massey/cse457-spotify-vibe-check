@@ -81,10 +81,10 @@ const Dashboard = (props) => {
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
-            <Box>
+            <Box sx={{width: "100%"}}>
               <p>genre bubble chart</p>
             </Box>
-            <Box>
+            <Box sx={{width: "100%"}}>
               <p>artist bubble chart</p>
             </Box>
           </Box>
