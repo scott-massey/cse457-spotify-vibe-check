@@ -21,58 +21,74 @@ const Dashboard = (props) => {
   const [loadingPlaylist, setLoadingPlaylist] = useState(false)
   const [featuresSummary, setFeaturesSummary] = useState(null)
 
-//   console.error("rendering dashboard")
+  //   console.error("rendering dashboard")
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Container>
-        <Box sx={{ width: "250px", height: "64px",  }} /> 
+        <Box sx={{ width: "250px", height: "64px" }} />
         <Box
           sx={{
             display: "flex",
-			flexDirection: "column",
+            flexDirection: "column",
             flexGrow: 1,
             height: "100%",
             // minHeight: "500px",
             width: "100%",
           }}
         >
-			<Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
-				<PlaylistSelector
-					activePlaylist={activePlaylist}
-					setActivePlaylist={setActivePlaylist}
-					setLoadingPlaylist={setLoadingPlaylist}
-					setFeaturesSummary={setFeaturesSummary}
-				/>
-			</Box>
-			<Box sx={{display: "flex", flexDirection: "row"}}>
-				<Box sx={{display: "flex", flexDirection: "column", height: "100%"}}>
-					<Box sx={{height: "100%"}}>
-						<IQR data={data} featuresSummary={featuresSummary} activePlaylist={activePlaylist} loading={loadingPlaylist}/>
-					</Box>
-					<Box sx={{height: "100%"}}>
-						<p>radial chart goes here</p>
-					</Box>
+          <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
+            <PlaylistSelector
+              activePlaylist={activePlaylist}
+              setActivePlaylist={setActivePlaylist}
+              setLoadingPlaylist={setLoadingPlaylist}
+              setFeaturesSummary={setFeaturesSummary}
+            />
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                width: "100%",
+              }}
+            >
+              <Box sx={{ height: "100%" }}>
+                <IQR
+                  data={data}
+                  featuresSummary={featuresSummary}
+                  activePlaylist={activePlaylist}
+                  loading={loadingPlaylist}
+                />
+              </Box>
+              <Box sx={{ height: "100%" }}>
+                <p>radial chart goes here</p>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                minWidth: "300px",
+                maxWidth: "300px",
+              }}
+            >
+              <p>song selector goes here</p>
+            </Box>
+          </Box>
 
-				</Box>
-				<Box sx={{display: "flex", flexDirection: "column", height: "100%"}}>
-					<p>song selector goes here</p>
-				</Box>
-			</Box>
-
-			<Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
-				<Box>
-					<p>genre bubble chart</p>
-				</Box>
-				<Box>
-					<p>artist bubble chart</p>
-				</Box>
-
-			</Box>
-
+          <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
+            <Box>
+              <p>genre bubble chart</p>
+            </Box>
+            <Box>
+              <p>artist bubble chart</p>
+            </Box>
+          </Box>
         </Box>
-
       </Container>
     </React.Fragment>
   )
