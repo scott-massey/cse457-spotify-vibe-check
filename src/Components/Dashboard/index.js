@@ -12,6 +12,7 @@ import {
 } from "@mui/material"
 import PlaylistSelector from "./PlaylistSelector"
 import IQR from "./iqrVis"
+import Radar from "./radarChart"
 
 //test data for vis
 const data = [{ mean: 0.2 }, { mean: -0.4 }, { mean: 0.6 }, { mean: -0.1 }]
@@ -64,7 +65,12 @@ const Dashboard = (props) => {
                 />
               </Box>
               <Box sx={{ height: "100%" }}>
-                <p>radial chart goes here</p>
+                <Radar
+                  data={data}
+                  featuresSummary={featuresSummary}
+                  activePlaylist={activePlaylist}
+                  loading={loadingPlaylist}
+                />
               </Box>
             </Box>
             <Box

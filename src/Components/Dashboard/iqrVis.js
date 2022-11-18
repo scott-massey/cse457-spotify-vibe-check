@@ -1,3 +1,5 @@
+// code inspo for radar chart
+//  http://bl.ocks.org/nbremer/21746a9668ffdf6d8242
 import { useD3 } from "../hooks/useD3"
 import React from "react"
 import * as d3 from "d3"
@@ -5,6 +7,7 @@ import { CircularProgress } from "@mui/material"
 
 const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
    console.log(featuresSummary)
+   console.log("RAW DATA",activePlaylist)
   
   const renderChart = (svg) => {
     const width = 800
@@ -23,19 +26,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
 
 
     // Scales for each attr
-    let acousticnessScale = d3.scaleLinear()
-      .domain([0, 1])
-      .range([-150, 150]);
-
-    let danceabilityScale = d3.scaleLinear()
-      .domain([0, 1])
-      .range([-150, 150]);
-
-    let energyScale = d3.scaleLinear()
-      .domain([0, 1])
-      .range([-150, 150]);
-
-    let instrumentalnessScale = d3.scaleLinear()
+    let genericScale = d3.scaleLinear()
       .domain([0, 1])
       .range([-150, 150]);
     
@@ -47,18 +38,10 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
     .domain([50, 250])
     .range([-150, 150]);
 
-    let valenceScale = d3.scaleLinear()
-    .domain([0, 1])
-    .range([-150, 150]);
-
     function scaleValue(attrData,iqrSpot){
-      if(attrData.key == "acousticness") return acousticnessScale(attrData[iqrSpot])
-      if(attrData.key == "danceability") return danceabilityScale(attrData[iqrSpot])
-      if(attrData.key == "energy") return energyScale(attrData[iqrSpot])
-      if(attrData.key == "instrumentalness") return instrumentalnessScale(attrData[iqrSpot])
       if(attrData.key == "loudness") return loudnessScale(attrData[iqrSpot])
       if(attrData.key == "tempo") return tempoScale(attrData[iqrSpot])
-      if(attrData.key == "valence") return valenceScale(attrData[iqrSpot])
+      return genericScale(attrData[iqrSpot])
     }
 
     let averageAttrMeans = 0;
@@ -300,6 +283,11 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
 
     text.exit().remove()
 
+
+
+
+
+
     //data length is used as a trigger to re render chartRenderFn when length of data changes
   }
 
@@ -328,9 +316,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
         ref={ref}
       >
         <g className="plot-area" />
-        <g className="text-area" />
-        <g className="line-area" />
-        <g className="circle-area" />
+        <g className="radar-area" />
       </svg>
     </>
   )
