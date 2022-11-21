@@ -5,7 +5,7 @@ import React from "react"
 import * as d3 from "d3"
 import { CircularProgress } from "@mui/material"
 
-const Radar = ({ data, featuresSummary, activePlaylist, loading }) => {
+const Radar = ({ featuresSummary, selectedTrack, loading }) => {
   //console.log(featuresSummary)
   const renderChart = (svg) => {
     const width = svg.node()?.getBoundingClientRect().width
@@ -319,7 +319,9 @@ const Radar = ({ data, featuresSummary, activePlaylist, loading }) => {
   }
   return (
     <>
-      <p>{activePlaylist ? `${activePlaylist.name}` : ""}</p>
+      <div className="centered">
+        <h3>Radar Chart for {selectedTrack.title}</h3>
+      </div>
       <svg
         style={{
           height: 500,

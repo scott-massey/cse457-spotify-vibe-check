@@ -1,15 +1,5 @@
 import React, { useState } from "react"
-import {
-  CssBaseline,
-  Card,
-  CardMedia,
-  CardContent,
-  Box,
-  Typography,
-  Stack,
-  Item,
-  Container,
-} from "@mui/material"
+import { CssBaseline, Box, Container, CircularProgress } from "@mui/material"
 import PlaylistSelector from "./PlaylistSelector"
 import IQR from "./iqrVis"
 import Radar from "./radarChart"
@@ -25,6 +15,80 @@ const Dashboard = (props) => {
   const [loadingPlaylist, setLoadingPlaylist] = useState(false)
   const [featuresSummary, setFeaturesSummary] = useState(null)
   const [selectedTrack, setSelectedTrack] = useState(null)
+
+  const renderCharts = () => {
+    console.log("renderCharts")
+    if (!activePlaylist) {
+      return <h3>Select a playlist to get started!</h3>
+    }
+
+    if (loadingPlaylist) {
+      return (
+        <div className="centered">
+          <CircularProgress />
+        </div>
+      )
+    }
+
+    return (
+      <>
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+              width: "100%",
+            }}
+          >
+            <Box sx={{ height: "100%" }}>
+              <IQR
+                data={data}
+                featuresSummary={featuresSummary}
+                activePlaylist={activePlaylist}
+                loading={loadingPlaylist}
+              />
+            </Box>
+            {selectedTrack && (
+              <Box sx={{ height: "100%" }}>
+                <Radar
+                  data={data}
+                  featuresSummary={featuresSummary}
+                  activePlaylist={activePlaylist}
+                  loading={loadingPlaylist}
+                  selectedTrack={selectedTrack}
+                />
+              </Box>
+            )}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+              minWidth: "300px",
+              maxWidth: "300px",
+            }}
+          >
+            <SongSelector
+              activePlaylist={activePlaylist}
+              selectedTrack={selectedTrack}
+              setSelectedTrack={setSelectedTrack}
+            />
+          </Box>
+        </Box>
+
+        <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
+          <Box sx={{ width: "100%" }}>
+            <p>genre bubble chart</p>
+          </Box>
+          <Box sx={{ width: "100%" }}>
+            <p>artist bubble chart</p>
+          </Box>
+        </Box>
+      </>
+    )
+  }
 
   return (
     <React.Fragment>
@@ -49,57 +113,7 @@ const Dashboard = (props) => {
               setFeaturesSummary={setFeaturesSummary}
             />
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                width: "100%",
-              }}
-            >
-              <Box sx={{ height: "100%" }}>
-                <IQR
-                  data={data}
-                  featuresSummary={featuresSummary}
-                  activePlaylist={activePlaylist}
-                  loading={loadingPlaylist}
-                />
-              </Box>
-              <Box sx={{ height: "100%" }}>
-                <Radar
-                  data={data}
-                  featuresSummary={featuresSummary}
-                  activePlaylist={activePlaylist}
-                  loading={loadingPlaylist}
-                />
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                minWidth: "300px",
-                maxWidth: "300px",
-              }}
-            >
-              <SongSelector
-                activePlaylist={activePlaylist}
-                selectedTrack={selectedTrack}
-                setSelectedTrack={setSelectedTrack}
-              />
-            </Box>
-          </Box>
-
-          <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
-            <Box sx={{ width: "100%" }}>
-              <p>genre bubble chart</p>
-            </Box>
-            <Box sx={{ width: "100%" }}>
-              <p>artist bubble chart</p>
-            </Box>
-          </Box>
+          {renderCharts()}
         </Box>
       </Container>
     </React.Fragment>

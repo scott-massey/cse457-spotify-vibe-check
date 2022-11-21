@@ -3,9 +3,8 @@
 import { useD3 } from "../hooks/useD3"
 import React from "react"
 import * as d3 from "d3"
-import { CircularProgress } from "@mui/material"
 
-const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
+const IQR = ({ data, featuresSummary, loading }) => {
   const renderChart = (svg) => {
     const width = svg.node()?.getBoundingClientRect().width
 
@@ -285,19 +284,14 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
 
   const ref = useD3(renderChart, [featuresSummary, loading])
 
-  if (loading) {
-    return (
-      <div className="centered">
-        <CircularProgress />
-      </div>
-    )
-  }
   if (!featuresSummary) {
     return <div>select a playlist to get started!</div>
   }
   return (
     <>
-      <p>{activePlaylist ? `${activePlaylist.name}` : ""}</p>
+      <div className="centered">
+        <h3>Playlist Features</h3>
+      </div>
       <svg
         style={{
           height: 275,

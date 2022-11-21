@@ -2,7 +2,6 @@ import React from "react"
 import classnames from "classnames"
 
 import { CircularProgress } from "@mui/material"
-import classNames from "classnames"
 
 const SongSelector = ({
   activePlaylist = { tracks: { items: [] } },
@@ -34,7 +33,7 @@ const SongSelector = ({
     return (
       <div
         key={track.id}
-        className={classNames("song-select-track", {
+        className={classnames("song-select-track", {
           "song-select-track-selected": selectedTrack?.id === track.id,
         })}
         onClick={() => onTrackSelect(track)}
