@@ -1,9 +1,10 @@
 import React from "react"
 
-const SongSelector = () => {
+const SongSelector = ({ activePlaylist = [] }) => {
+  console.log("activePlaylist:", activePlaylist)
   return (
     <div>
-      <h1>Song Selector</h1>
+      <p>Song Selector</p>
     </div>
   )
 }

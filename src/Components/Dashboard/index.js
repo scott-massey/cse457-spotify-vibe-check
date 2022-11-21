@@ -13,6 +13,7 @@ import {
 import PlaylistSelector from "./PlaylistSelector"
 import IQR from "./iqrVis"
 import Radar from "./radarChart"
+import SongSelector from "./SongSelector"
 
 //test data for vis
 const data = [{ mean: 0.2 }, { mean: -0.4 }, { mean: 0.6 }, { mean: -0.1 }]
@@ -21,8 +22,6 @@ const Dashboard = (props) => {
   const [activePlaylist, setActivePlaylist] = useState(null)
   const [loadingPlaylist, setLoadingPlaylist] = useState(false)
   const [featuresSummary, setFeaturesSummary] = useState(null)
-
-  //   console.error("rendering dashboard")
 
   return (
     <React.Fragment>
@@ -83,14 +82,15 @@ const Dashboard = (props) => {
               }}
             >
               <p>song selector goes here</p>
+              <SongSelector activePlaylist={activePlaylist} />
             </Box>
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
-            <Box sx={{width: "100%"}}>
+            <Box sx={{ width: "100%" }}>
               <p>genre bubble chart</p>
             </Box>
-            <Box sx={{width: "100%"}}>
+            <Box sx={{ width: "100%" }}>
               <p>artist bubble chart</p>
             </Box>
           </Box>

@@ -38,8 +38,6 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
     if (featuresSummary) {
       for (let x = 1; x < 7; x++) {
         averageAttrMeans += scaleValue(featuresSummary[x], "mean")
-        console.log(featuresSummary[x])
-        console.log(averageAttrMeans)
       }
       //gets avg of means for line down middle of iqr
       averageAttrMeans = averageAttrMeans / 7
