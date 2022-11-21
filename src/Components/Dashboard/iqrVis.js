@@ -6,12 +6,8 @@ import * as d3 from "d3"
 import { CircularProgress } from "@mui/material"
 
 const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
-  console.log(featuresSummary)
-  console.log("RAW DATA", activePlaylist)
-
   const renderChart = (svg) => {
-    const width = 800
-    const height = 300
+    const width = svg.node()?.getBoundingClientRect().width
 
     //circle avg label container
     svg
@@ -269,7 +265,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .selectAll("text.label")
       .data(featuresSummary)
 
-    //add story titles
+    //add song attributes labels
     text
       .enter()
       .append("text")
@@ -293,7 +289,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
 
   if (loading) {
     return (
-      <div class="centered">
+      <div className="centered">
         <CircularProgress />
       </div>
     )
