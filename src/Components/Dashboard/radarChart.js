@@ -8,8 +8,7 @@ import { CircularProgress } from "@mui/material"
 const Radar = ({ data, featuresSummary, activePlaylist, loading }) => {
   //console.log(featuresSummary)
   const renderChart = (svg) => {
-    const width = 800
-    const height = 500
+    const width = svg.node()?.getBoundingClientRect().width
     let middle = width / 2
 
     var margin = { top: 200, right: 100, bottom: 200, left: 100 },
@@ -30,8 +29,8 @@ const Radar = ({ data, featuresSummary, activePlaylist, loading }) => {
     let tempoScale = d3.scaleLinear().domain([50, 250]).range([0, 3])
 
     function scaleValue(attrData) {
-      if (attrData.key == "loudness") return loudnessScale(attrData["mean"])
-      if (attrData.key == "tempo") return tempoScale(attrData["mean"])
+      if (attrData.key === "loudness") return loudnessScale(attrData["mean"])
+      if (attrData.key === "tempo") return tempoScale(attrData["mean"])
       return genericScale(attrData)
       return genericScale(attrData["mean"])
     }

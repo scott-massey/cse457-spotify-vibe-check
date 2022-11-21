@@ -176,11 +176,11 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .select(".plot-area")
       .append("line")
       .attr("x1", function (d) {
-        return middle + averageAttrMeans
+        return middle
       })
       .attr("y1", 10)
       .attr("x2", function (d) {
-        return middle + averageAttrMeans
+        return middle
       })
       .attr("y2", function (d) {
         return (data.length + 3) * 30 + 30
@@ -195,7 +195,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .select(".plot-area")
       .append("text")
       .attr("x", function (d) {
-        return middle + averageAttrMeans
+        return middle
       })
       .attr("y", (data.length + 5) * 30 + 40)
       .attr("transform", "translate(-50, -50)")

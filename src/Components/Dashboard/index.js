@@ -15,6 +15,8 @@ import IQR from "./iqrVis"
 import Radar from "./radarChart"
 import SongSelector from "./SongSelector"
 
+import "./index.css"
+
 //test data for vis
 const data = [{ mean: 0.2 }, { mean: -0.4 }, { mean: 0.6 }, { mean: -0.1 }]
 
@@ -22,6 +24,7 @@ const Dashboard = (props) => {
   const [activePlaylist, setActivePlaylist] = useState(null)
   const [loadingPlaylist, setLoadingPlaylist] = useState(false)
   const [featuresSummary, setFeaturesSummary] = useState(null)
+  const [selectedTrack, setSelectedTrack] = useState(null)
 
   return (
     <React.Fragment>
@@ -81,8 +84,11 @@ const Dashboard = (props) => {
                 maxWidth: "300px",
               }}
             >
-              <p>song selector goes here</p>
-              <SongSelector activePlaylist={activePlaylist} />
+              <SongSelector
+                activePlaylist={activePlaylist}
+                selectedTrack={selectedTrack}
+                setSelectedTrack={setSelectedTrack}
+              />
             </Box>
           </Box>
 
