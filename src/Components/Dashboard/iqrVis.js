@@ -6,9 +6,9 @@ import * as d3 from "d3"
 import { CircularProgress } from "@mui/material"
 
 const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
-   console.log(featuresSummary)
-   console.log("RAW DATA",activePlaylist)
-  
+  console.log(featuresSummary)
+  console.log("RAW DATA", activePlaylist)
+
   const renderChart = (svg) => {
     const width = 800
     const height = 300
@@ -22,41 +22,32 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .attr("x", "50%")
       .attr("y", 50)
 
-    let middle = width/2
-
+    let middle = width / 2
 
     // Scales for each attr
-    let genericScale = d3.scaleLinear()
-      .domain([0, 1])
-      .range([-150, 150]);
-    
-    let loudnessScale  = d3.scaleLinear()
-    .domain([-25, 0])
-    .range([-150, 150]);
+    let genericScale = d3.scaleLinear().domain([0, 1]).range([-150, 150])
 
-    let tempoScale = d3.scaleLinear()
-    .domain([50, 250])
-    .range([-150, 150]);
+    let loudnessScale = d3.scaleLinear().domain([-25, 0]).range([-150, 150])
 
-    function scaleValue(attrData,iqrSpot){
-      if(attrData.key == "loudness") return loudnessScale(attrData[iqrSpot])
-      if(attrData.key == "tempo") return tempoScale(attrData[iqrSpot])
+    let tempoScale = d3.scaleLinear().domain([50, 250]).range([-150, 150])
+
+    function scaleValue(attrData, iqrSpot) {
+      if (attrData.key === "loudness") return loudnessScale(attrData[iqrSpot])
+      if (attrData.key === "tempo") return tempoScale(attrData[iqrSpot])
       return genericScale(attrData[iqrSpot])
     }
 
-    let averageAttrMeans = 0;
+    let averageAttrMeans = 0
 
-    if(featuresSummary){
-      for (let x = 1; x < 7 ; x++){
-        averageAttrMeans += scaleValue(featuresSummary[x],'mean')
+    if (featuresSummary) {
+      for (let x = 1; x < 7; x++) {
+        averageAttrMeans += scaleValue(featuresSummary[x], "mean")
         console.log(featuresSummary[x])
         console.log(averageAttrMeans)
-
       }
       //gets avg of means for line down middle of iqr
-    averageAttrMeans = averageAttrMeans / 7
+      averageAttrMeans = averageAttrMeans / 7
     }
-    
 
     let circle = svg
       .select(".plot-area")
@@ -68,7 +59,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        return middle + scaleValue(d,'mean')
+        return middle + scaleValue(d, "mean")
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -99,7 +90,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        return middle + scaleValue(d,'min')
+        return middle + scaleValue(d, "min")
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -129,7 +120,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        return middle + scaleValue(d,'max')
+        return middle + scaleValue(d, "max")
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -167,13 +158,13 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .enter()
       .append("line")
       .attr("x1", function (d, i) {
-        return middle + scaleValue(d,'min')
+        return middle + scaleValue(d, "min")
       })
       .attr("y1", function (d, i) {
         return i * 30 + 30
       })
       .attr("x2", function (d, i) {
-       return middle + scaleValue(d,'max')
+        return middle + scaleValue(d, "max")
       })
       .attr("y2", function (d, i) {
         return i * 30 + 30
@@ -209,7 +200,9 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
     svg
       .select(".plot-area")
       .append("text")
-      .attr("x", function(d){return middle + averageAttrMeans})
+      .attr("x", function (d) {
+        return middle + averageAttrMeans
+      })
       .attr("y", (data.length + 5) * 30 + 40)
       .attr("transform", "translate(-50, -50)")
       .style("font-size", 10)
@@ -217,49 +210,59 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
 
     //left arrow label
     svg
-    .select(".plot-area")
-    .append("text")
-    .attr("x", function(d){return middle -150})
-    .attr("y", (data.length + 5) * 30 + 40)
-    .attr("transform", "translate(-20, -50)")
-    .style("font-size", 10)
-    .text("<-- less attr")
+      .select(".plot-area")
+      .append("text")
+      .attr("x", function (d) {
+        return middle - 150
+      })
+      .attr("y", (data.length + 5) * 30 + 40)
+      .attr("transform", "translate(-20, -50)")
+      .style("font-size", 10)
+      .text("<-- less attr")
 
     //left arrow label
     svg
-    .select(".plot-area")
-    .append("text")
-    .attr("x", function(d){return middle +150})
-    .attr("y", (data.length + 5) * 30 + 40)
-    .attr("transform", "translate(-20, -50)")
-    .style("font-size", 10)
-    .text("more attr -->")
+      .select(".plot-area")
+      .append("text")
+      .attr("x", function (d) {
+        return middle + 150
+      })
+      .attr("y", (data.length + 5) * 30 + 40)
+      .attr("transform", "translate(-20, -50)")
+      .style("font-size", 10)
+      .text("more attr -->")
 
     //middle of scale label (0)
     svg
-    .select(".plot-area")
-    .append("text")
-    .attr("x", function(d){return middle})
-    .attr("y", 10)
-    .style("font-size", 10)
-    .text("0")
-     //left bound of scale (-3)
-     svg
-     .select(".plot-area")
-     .append("text")
-     .attr("x", function(d){return middle - 155})
-     .attr("y", 10)
-     .style("font-size", 10)
-     .text("-3")
+      .select(".plot-area")
+      .append("text")
+      .attr("x", function (d) {
+        return middle
+      })
+      .attr("y", 10)
+      .style("font-size", 10)
+      .text("0")
+    //left bound of scale (-3)
+    svg
+      .select(".plot-area")
+      .append("text")
+      .attr("x", function (d) {
+        return middle - 155
+      })
+      .attr("y", 10)
+      .style("font-size", 10)
+      .text("-3")
 
     //right bound of scale (+3)
     svg
-    .select(".plot-area")
-    .append("text")
-    .attr("x", function(d){return middle + 155})
-    .attr("y", 10)
-    .style("font-size", 10)
-    .text("+3")
+      .select(".plot-area")
+      .append("text")
+      .attr("x", function (d) {
+        return middle + 155
+      })
+      .attr("y", 10)
+      .style("font-size", 10)
+      .text("+3")
 
     let text = svg
       .select(".plot-area")
@@ -283,11 +286,6 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
 
     text.exit().remove()
 
-
-
-
-
-
     //data length is used as a trigger to re render chartRenderFn when length of data changes
   }
 
@@ -308,7 +306,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       <p>{activePlaylist ? `${activePlaylist.name}` : ""}</p>
       <svg
         style={{
-          height: 500,
+          height: 275,
           width: "100%",
           marginRight: "0px",
           marginLeft: "0px",
