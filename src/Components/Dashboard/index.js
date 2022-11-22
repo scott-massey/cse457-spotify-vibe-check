@@ -1,15 +1,5 @@
 import React, { useState } from "react"
-import {
-  CssBaseline,
-  Card,
-  CardMedia,
-  CardContent,
-  Box,
-  Typography,
-  Stack,
-  Item,
-  Container,
-} from "@mui/material"
+import { CssBaseline, Box, Container } from "@mui/material"
 import PlaylistSelector from "./PlaylistSelector"
 import IQR from "./iqrVis"
 import Radar from "./radarChart"
