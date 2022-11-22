@@ -25,6 +25,7 @@ function PlaylistSelector({
   setActivePlaylist,
   setLoadingPlaylist,
   setFeaturesSummary,
+  setSelectedTrack,
 }) {
   const { data: { items = [] } = {} } = useCurrentUserPlaylists()
   const { data: user } = useGetCurrentUserInfo()
@@ -69,6 +70,7 @@ function PlaylistSelector({
 
     setActivePlaylist(playlist)
     setFeaturesSummary(featuresSummary)
+    setSelectedTrack(null)
     setLoadingPlaylist(false)
   }
 
@@ -86,6 +88,7 @@ function PlaylistSelector({
 
     setActivePlaylist(playlist)
     setFeaturesSummary(featuresSummary)
+    setSelectedTrack(null)
     setLoadingPlaylist(false)
   }
 

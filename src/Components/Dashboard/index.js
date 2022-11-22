@@ -37,6 +37,7 @@ const Dashboard = (props) => {
               setActivePlaylist={setActivePlaylist}
               setLoadingPlaylist={setLoadingPlaylist}
               setFeaturesSummary={setFeaturesSummary}
+              setSelectedTrack={setSelectedTrack}
             />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -79,6 +80,7 @@ const Dashboard = (props) => {
                 activePlaylist={activePlaylist}
                 selectedTrack={selectedTrack}
                 setSelectedTrack={setSelectedTrack}
+                loading={loadingPlaylist}
               />
             </Box>
           </Box>

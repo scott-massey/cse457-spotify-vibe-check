@@ -7,6 +7,7 @@ const SongSelector = ({
   activePlaylist = { tracks: { items: [] } },
   selectedTrack,
   setSelectedTrack,
+  loading,
 }) => {
   if (!activePlaylist || !activePlaylist.id) {
     return <div />
@@ -57,7 +58,7 @@ const SongSelector = ({
         Click on a song to see more about that individual song.
       </p>
       <div className="song-select-list">
-        {activePlaylist.tracks.items.map(renderSongOption)}
+        {!loading && activePlaylist.tracks.items.map(renderSongOption)}
       </div>
     </div>
   )
