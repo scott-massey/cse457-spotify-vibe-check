@@ -305,10 +305,14 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     //data length is used as a trigger to re render chartRenderFn when length of data changes
   }
 
-  const ref = useD3(renderChart, [featuresSummary, loading])
+  const ref = useD3(renderChart, [featuresSummary, loading, selectedTrack])
 
   if (!featuresSummary || loading) {
     return <div></div>
+  }
+
+  if (!selectedTrack) {
+    return <h3>Select a track to see more!</h3>
   }
 
   return (
