@@ -307,20 +307,14 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
 
   const ref = useD3(renderChart, [featuresSummary, loading])
 
-  if (loading) {
-    return (
-      <div className="centered">
-        <CircularProgress />
-      </div>
-    )
+  if (!featuresSummary || loading) {
+    return <div></div>
   }
-  if (!featuresSummary) {
-    return <div>select a playlist to get started!</div>
-  }
+
   return (
     <>
       <div className="centered">
-        <h3>Radar Chart for {selectedTrack.title}</h3>
+        <h3>Radar Chart for {selectedTrack?.name}</h3>
       </div>
       <svg
         style={{
