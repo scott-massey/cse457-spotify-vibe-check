@@ -3,13 +3,20 @@
 import { useD3 } from "../hooks/useD3"
 import React from "react"
 import * as d3 from "d3"
-import { CircularProgress } from "@mui/material"
+import { useGetTrackFeatures } from "../../data"
 
 const Radar = ({ featuresSummary, selectedTrack, loading }) => {
-  //console.log(featuresSummary)
+  console.log("selectedTrack:", selectedTrack)
+  const [height, setHeight] = React.useState(0)
+  const { data: features } = useGetTrackFeatures(selectedTrack?.id)
+
   const renderChart = (svg) => {
+    if (!features) return
+
     const width = svg.node()?.getBoundingClientRect().width
     let middle = width / 2
+
+    if (height !== width) setHeight(width)
 
     var margin = { top: 200, right: 100, bottom: 200, left: 100 },
       radarWidth =
@@ -29,10 +36,9 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     let tempoScale = d3.scaleLinear().domain([50, 250]).range([0, 3])
 
     function scaleValue(attrData) {
-      if (attrData.key === "loudness") return loudnessScale(attrData["mean"])
-      if (attrData.key === "tempo") return tempoScale(attrData["mean"])
-      return genericScale(attrData)
-      return genericScale(attrData["mean"])
+      if (attrData.key === "loudness") return loudnessScale(attrData.value)
+      if (attrData.key === "tempo") return tempoScale(attrData.value)
+      return genericScale(attrData.value)
     }
 
     var cfg = {
@@ -171,13 +177,23 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       })
       .call(wrap, cfg.wrapWidth)
 
-    var testData = [
+    /*var testData = [
       [3.14 * 1.4],
       [3.14 * 0.75],
       [3.14 * 1.25],
       [3.14 * 1.5],
       [3.14 * 1.75],
       [3.14 * 2],
+    ]*/
+
+    const data = [
+      { key: "acousticness", value: features.acousticness },
+      { key: "danceability", value: features.danceability },
+      { key: "energy", value: features.energy },
+      { key: "energy", value: features.instrumentalness },
+      { key: "loudness", value: features.loudness },
+      { key: "tempo", value: features.tempo },
+      { key: "valence", value: features.valence },
     ]
 
     //draw radar blobs
@@ -211,7 +227,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       .append("path")
       .attr("class", "radarArea")
       .attr("d", function (d, i) {
-        return radarLine(testData)
+        return radarLine(data)
       })
       .style("fill", function (d, i) {
         return cfg.color(i)
@@ -305,7 +321,12 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     //data length is used as a trigger to re render chartRenderFn when length of data changes
   }
 
-  const ref = useD3(renderChart, [featuresSummary, loading, selectedTrack])
+  const ref = useD3(renderChart, [
+    featuresSummary,
+    loading,
+    selectedTrack,
+    features,
+  ])
 
   if (!featuresSummary || loading) {
     return <div></div>
@@ -322,7 +343,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       </div>
       <svg
         style={{
-          height: 500,
+          height,
           width: "100%",
           marginRight: "0px",
           marginLeft: "0px",
