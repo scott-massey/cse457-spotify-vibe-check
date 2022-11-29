@@ -1,18 +1,12 @@
 import React, { useState } from "react"
-import {
-  CssBaseline,
-  Card,
-  CardMedia,
-  CardContent,
-  Box,
-  Typography,
-  Stack,
-  Item,
-  Container,
-} from "@mui/material"
+import { CssBaseline, Box, Container } from "@mui/material"
 import PlaylistSelector from "./PlaylistSelector"
 import IQR from "./iqrVis"
 import ArtistBubbles from "./ArtistBubbles"
+import Radar from "./radarChart"
+import SongSelector from "./SongSelector"
+
+import "./index.css"
 
 //test data for vis
 const data = [{ mean: 0.2 }, { mean: -0.4 }, { mean: 0.6 }, { mean: -0.1 }]
@@ -22,8 +16,7 @@ const Dashboard = (props) => {
   const [loadingPlaylist, setLoadingPlaylist] = useState(false)
   const [featuresSummary, setFeaturesSummary] = useState(null)
   const [artistCounts, setArtistCounts] = useState(null)
-
-  //   console.error("rendering dashboard")
+  const [selectedTrack, setSelectedTrack] = useState(null)
 
   return (
     <React.Fragment>
@@ -46,7 +39,8 @@ const Dashboard = (props) => {
               setActivePlaylist={setActivePlaylist}
               setLoadingPlaylist={setLoadingPlaylist}
               setFeaturesSummary={setFeaturesSummary}
-			  setArtistCounts={setArtistCounts}
+			        setArtistCounts={setArtistCounts}
+              setSelectedTrack={setSelectedTrack}
             />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -64,10 +58,19 @@ const Dashboard = (props) => {
                   featuresSummary={featuresSummary}
                   activePlaylist={activePlaylist}
                   loading={loadingPlaylist}
+                  selectedTrack={selectedTrack}
                 />
               </Box>
               <Box sx={{ height: "100%" }}>
-                <p>radial chart goes here</p>
+                {selectedTrack && (
+                  <Radar
+                    data={data}
+                    featuresSummary={featuresSummary}
+                    activePlaylist={activePlaylist}
+                    loading={loadingPlaylist}
+                    selectedTrack={selectedTrack}
+                  />
+                )}
               </Box>
             </Box>
             <Box
@@ -79,7 +82,12 @@ const Dashboard = (props) => {
                 maxWidth: "300px",
               }}
             >
-              <p>song selector goes here</p>
+              <SongSelector
+                activePlaylist={activePlaylist}
+                selectedTrack={selectedTrack}
+                setSelectedTrack={setSelectedTrack}
+                loading={loadingPlaylist}
+              />
             </Box>
           </Box>
 

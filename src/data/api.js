@@ -14,6 +14,13 @@ const getTracksFeatures = async (tracks) => {
   return data.audio_features
 }
 
+const getTrackFeatures = async (trackId) => {
+  if (!trackId) return null
+
+  const { data } = await spotifyAxios.get(`/audio-features/${trackId}`)
+  return data
+}
+
 const getPlaylist = async (playlistId) => {
   if (!playlistId) return null
   try {
@@ -84,4 +91,5 @@ export {
   logout,
   getPlaylist,
   getTracksFeatures,
+  getTrackFeatures,
 }

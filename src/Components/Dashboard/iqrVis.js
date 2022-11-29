@@ -1,14 +1,27 @@
+// code inspo for radar chart
+//  http://bl.ocks.org/nbremer/21746a9668ffdf6d8242
 import { useD3 } from "../hooks/useD3"
-import React from "react"
+import React, { useRef, useEffect } from "react"
 import * as d3 from "d3"
 import { CircularProgress } from "@mui/material"
 
-const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
-  // console.log(featuresSummary)
+import { useGetTrackFeatures } from "../../data"
 
-  const renderChart = (svg) => {
-    const width = 800
-    const height = 300
+const IQR = ({
+  data,
+  featuresSummary,
+  loading,
+  activePlaylist,
+  selectedTrack,
+}) => {
+  const ref = useRef()
+  const { data: selectedTrackFeatures } = useGetTrackFeatures(selectedTrack?.id)
+
+  useEffect(() => {
+    if (!ref.current) return
+
+    const svg = d3.select(ref.current)
+    const width = svg.node()?.getBoundingClientRect().width
 
     //circle avg label container
     svg
@@ -19,18 +32,18 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .attr("x", "50%")
       .attr("y", 50)
 
-    // Scales and axes
-    const x = d3
-      .scaleLinear()
-      .range([0, width])
-      .domain(
-        (function (d) {
-          return d.low
-        },
-        function (d) {
-          return d.high
-        })
-      )
+    let middle = width / 2
+
+    // Scales for each attr
+    let genericScale = d3.scaleLinear().domain([0, 1]).range([-150, 150])
+    let loudnessScale = d3.scaleLinear().domain([-25, 0]).range([-150, 150])
+    let tempoScale = d3.scaleLinear().domain([50, 250]).range([-150, 150])
+
+    function scaleValue(attrData, iqrSpot) {
+      if (attrData.key === "loudness") return loudnessScale(attrData[iqrSpot])
+      if (attrData.key === "tempo") return tempoScale(attrData[iqrSpot])
+      return genericScale(attrData[iqrSpot])
+    }
 
     let circle = svg
       .select(".plot-area")
@@ -42,10 +55,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        if (d.key === "loudness") return width / 2 + 15
-        if (d.key === "tempo") return width / 2 + 24
-
-        return width / 2 + 100 * d.mean
+        return middle + scaleValue(d, "mean")
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -76,9 +86,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        if (d.key === "tempo") return width / 2 - 0.3
-        if (d.key === "loudness") return width / 2 - 0.5
-        return width / 2 + 100 * d.min
+        return middle + scaleValue(d, "min")
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -108,8 +116,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        if (d.key === "tempo") return width / 2 + Math.abs(d.max)
-        return width / 2 + Math.abs(100 * d.max)
+        return middle + scaleValue(d, "max")
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -146,18 +153,14 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
     iqrLine
       .enter()
       .append("line")
-      .attr("x1", function (d, i) {
-        if (i === 5) return 0
-        if (i === 4) return 0
-        return width / 2 + 100 * d.min
+      .attr("x1", function (d) {
+        return middle + scaleValue(d, "min")
       })
       .attr("y1", function (d, i) {
         return i * 30 + 30
       })
-      .attr("x2", function (d, i) {
-        if (i === 5) return 0
-        if (i === 4) return 0
-        return width / 2 + Math.abs(100 * d.max)
+      .attr("x2", function (d) {
+        return middle + scaleValue(d, "max")
       })
       .attr("y2", function (d, i) {
         return i * 30 + 30
@@ -175,15 +178,13 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
       .select(".plot-area")
       .append("line")
       .attr("x1", function (d) {
-        return width / 2 + 50
+        return middle
       })
-      .attr("y1", 30)
+      .attr("y1", 10)
       .attr("x2", function (d) {
-        return width / 2 + 50
+        return middle
       })
-      .attr("y2", function (d) {
-        return (data.length + 3) * 30 + 30
-      })
+      .attr("y2", 240)
       .attr("stroke", "blue")
       .attr("stroke-width", 2)
       .attr("stroke-dasharray", 5.5)
@@ -193,18 +194,70 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
     svg
       .select(".plot-area")
       .append("text")
-      .attr("x", width / 2 + 50)
-      .attr("y", (data.length + 5) * 30 + 40)
+      .attr("x", function (d) {
+        return middle
+      })
+      .attr("y", 310)
       .attr("transform", "translate(-50, -50)")
       .style("font-size", 10)
-      .text("Average Attribute Value")
+      .text("Avg Scaled Attr Value")
+
+    //left arrow label
+    svg
+      .select(".plot-area")
+      .append("text")
+      .attr("x", function (d) {
+        return middle - 150
+      })
+      .attr("y", 310)
+      .attr("transform", "translate(-20, -50)")
+      .style("font-size", 10)
+      .text("<-- less attr")
+
+    //left arrow label
+    svg
+      .select(".plot-area")
+      .append("text")
+      .attr("x", function (d) {
+        return middle + 150
+      })
+      .attr("y", 310)
+      .attr("transform", "translate(-20, -50)")
+      .style("font-size", 10)
+      .text("more attr -->")
+
+    //middle of scale label (0)
+    svg
+      .select(".plot-area")
+      .append("text")
+      .attr("x", middle)
+      .attr("y", 10)
+      .style("font-size", 10)
+      .text("0")
+    //left bound of scale (-3)
+    svg
+      .select(".plot-area")
+      .append("text")
+      .attr("x", middle - 155)
+      .attr("y", 10)
+      .style("font-size", 10)
+      .text("-1")
+
+    //right bound of scale (+3)
+    svg
+      .select(".plot-area")
+      .append("text")
+      .attr("x", middle + 155)
+      .attr("y", 10)
+      .style("font-size", 10)
+      .text("+1")
 
     let text = svg
       .select(".plot-area")
       .selectAll("text.label")
       .data(featuresSummary)
 
-    //add story titles
+    //add song attributes labels
     text
       .enter()
       .append("text")
@@ -221,27 +274,83 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
 
     text.exit().remove()
 
+    // add group for selected track
+    svg.append("g").attr("class", "selected-track")
+
     //data length is used as a trigger to re render chartRenderFn when length of data changes
+  }, [featuresSummary, loading, data.length])
+
+  useEffect(() => {
+    if (!ref.current) return
+    if (!selectedTrackFeatures) return
+
+    // Scales for each attr
+    let genericScale = d3.scaleLinear().domain([0, 1]).range([-150, 150])
+    let loudnessScale = d3.scaleLinear().domain([-25, 0]).range([-150, 150])
+    let tempoScale = d3.scaleLinear().domain([50, 250]).range([-150, 150])
+
+    function scaleValue(d, i) {
+      if (i === 4) return loudnessScale(d)
+      if (i === 5) return tempoScale(d)
+      return genericScale(d)
+    }
+
+    const svg = d3.select(ref.current)
+    const width = svg.node()?.getBoundingClientRect().width
+    const middle = width / 2
+
+    const features = [
+      selectedTrackFeatures.acousticness,
+      selectedTrackFeatures.danceability,
+      selectedTrackFeatures.energy,
+      selectedTrackFeatures.instrumentalness,
+      selectedTrackFeatures.loudness,
+      selectedTrackFeatures.tempo,
+      selectedTrackFeatures.valence,
+    ]
+
+    const selectedTrackCircles = svg
+      .select(".selected-track")
+      .selectAll("circle")
+      .data(features)
+
+    //draw circles for selected track
+    selectedTrackCircles
+      .enter()
+      .append("circle")
+      .merge(selectedTrackCircles)
+      .attr("cx", function (d, i) {
+        return middle + scaleValue(d, i)
+      })
+      .attr("cy", function (d, i) {
+        return i * 30 + 30
+      })
+      .attr("r", 5)
+      .attr("fill", "#EDC951")
+
+    selectedTrackCircles.exit().remove()
+  }, [selectedTrackFeatures])
+
+  if (!activePlaylist) {
+    return <h3>Click on a playlist to get started!</h3>
   }
 
-  const ref = useD3(renderChart, [featuresSummary, loading])
-
-  if (loading) {
+  if (loading || !featuresSummary) {
     return (
-      <div class="centered">
+      <div className="centered">
         <CircularProgress />
       </div>
     )
   }
-  if (!featuresSummary) {
-    return <div>select a playlist to get started!</div>
-  }
+
   return (
     <>
-      <p>{activePlaylist ? `${activePlaylist.name}` : ""}</p>
+      <div className="centered">
+        <h3>Playlist Features</h3>
+      </div>
       <svg
         style={{
-          height: 500,
+          height: 275,
           width: "100%",
           marginRight: "0px",
           marginLeft: "0px",
@@ -249,9 +358,7 @@ const IQR = ({ data, featuresSummary, activePlaylist, loading }) => {
         ref={ref}
       >
         <g className="plot-area" />
-        <g className="text-area" />
-        <g className="line-area" />
-        <g className="circle-area" />
+        <g className="radar-area" />
       </svg>
     </>
   )

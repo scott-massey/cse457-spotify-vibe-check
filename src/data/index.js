@@ -6,6 +6,7 @@ import {
   logout,
   getPlaylist,
   getTracksFeatures,
+  getTrackFeatures,
 } from "./api"
 
 const useCurrentUserPlaylists = () => {
@@ -30,11 +31,18 @@ const useGetPlaylist = (playlistId) => {
 }
 
 const useGetTracksFeatures = (tracks) => {
-	// if(!tracks) return
-	console.log(tracks)
+  // if(!tracks) return
+  console.log(tracks)
   return useQuery({
     queryKey: ["tracksFeatures", tracks.map((track) => track.id).join(",")],
     queryFn: () => getTracksFeatures(tracks),
+  })
+}
+
+const useGetTrackFeatures = (trackId) => {
+  return useQuery({
+    queryKey: ["trackFeatures", trackId],
+    queryFn: () => getTrackFeatures(trackId),
   })
 }
 
@@ -45,4 +53,5 @@ export {
   logout,
   useGetPlaylist,
   useGetTracksFeatures,
+  useGetTrackFeatures,
 }
