@@ -1,10 +1,12 @@
 import { useD3 } from "../hooks/useD3"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import * as d3 from "d3"
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { ticks } from "d3"
 
 const ArtistBubbles = ({ data }) => {
+
+	const [activeArtist, setActiveArtist] = useState(null)
 
 	useEffect(() => {
 		console.log(data)
@@ -14,10 +16,25 @@ const ArtistBubbles = ({ data }) => {
 		}
 	}, [data])
 
+	if (!data) {
+		return (
+			<Box>Bubbles</Box>
+		)
+	}
 	return(
-		<Box id="artist-bubbles-container" >
-			bubbles
+		<Box>
+			<Box id="artist-bubbles-header">
+				<Typography>Arists in this playlist:</Typography>
+				{activeArtist && <Typography>{activeArtist}</Typography>}
+			</Box>
+			<Box id="artist-bubbles-container" ></Box>
+
+			{/* <Box id="artist-bubbles-body">
+				<Box id="artist-bubbles-container" ></Box>
+	
+			</Box> */}
 		</Box>
+
 	)
 
 }
@@ -62,9 +79,9 @@ function bubbleChart() {
 
   
 	// set up colour scale
-	const fillColour = d3.scaleOrdinal()
-		.domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
-		.range(["#0074D9", "#7FDBFF", "#39CCCC", "#3D9970", "#AAAAAA"]);
+	// const fillColour = d3.scaleOrdinal()
+	// 	.domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
+	// 	.range(["#0074D9", "#7FDBFF", "#39CCCC", "#3D9970", "#AAAAAA"]);
   
 	// data manipulation function takes raw data from csv and converts it into an array of node objects
 	// each node will store data and visualisation values to draw a bubble
@@ -153,15 +170,25 @@ function bubbleChart() {
 		.append('circle')
 		.classed('bubble', true)
 		.attr('r', d => d.radius)
-		.attr('fill', d => fillColour(d.Bronx))
+		.attr('fill', "#0096FF")
+		.on('mouseover', (d) => {
+			console.log(d)
+			d.fromElement.attr('fill', 'red')
+			d3.select(this).attr("fill", "red")
+		})
+		// .attr('fill', d => fillColour(d.Bronx))
   
 		// labels
-		//   labels = elements
-		// 	.append('text')
-		// 	.attr('dy', '.3em')
-		// 	.style('text-anchor', 'middle')
-		// 	.style('font-size', 10)
-		// 	.text(d => d.Affenpinscher)
+		labels = elements
+			.append('text')
+			.attr('dy', '.3em')
+			.style('text-anchor', 'middle')
+			.style('font-size', 10)
+			.style('fill', 'white')
+			.text(d => {
+				console.log(d)
+				return d.size
+			})
 
 		// simulation.force('x').initialize(rawData)
 		// simulation.force('y').initialize(rawData)
@@ -180,11 +207,6 @@ function bubbleChart() {
 			.restart();
 		}
 
-		// for (var i=0; i<300; i++) {
-		// 	console.log('h')
-		// 	simulation.nodes(nodes).tick()
-		// }
-	
 		// callback function called after every tick of the force simulation
 		// here we do the actual repositioning of the circles based on current x and y value of their bound node data
 		// x and y values are modified by the force simulation
@@ -194,9 +216,9 @@ function bubbleChart() {
 			.attr('cx', d => d.x)
 			.attr('cy', d => d.y)
 	
-		//   labels
-		// 	.attr('x', d => d.x)
-		// 	.attr('y', d => d.y)
+		  labels
+			.attr('x', d => d.x)
+			.attr('y', d => d.y)
 		}
 		// simulation.restart()
 

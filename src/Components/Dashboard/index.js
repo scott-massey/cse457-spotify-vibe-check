@@ -87,9 +87,6 @@ const Dashboard = (props) => {
             <Box sx={{width: "100%"}}>
               <ArtistBubbles data={artistCounts} />
             </Box>
-            <Box sx={{width: "100%"}}>
-              <p>genre bubble chart</p>
-            </Box>
           </Box>
         </Box>
       </Container>
