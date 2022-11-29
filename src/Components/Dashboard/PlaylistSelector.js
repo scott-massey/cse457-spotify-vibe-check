@@ -25,6 +25,7 @@ function PlaylistSelector({
   setActivePlaylist,
   setLoadingPlaylist,
   setFeaturesSummary,
+  setArtistCounts
 }) {
   const { data: { items = [] } = {} } = useCurrentUserPlaylists()
   const { data: user } = useGetCurrentUserInfo()
@@ -60,7 +61,26 @@ function PlaylistSelector({
     setLoadingPlaylist(true)
 
     const playlist = await getPlaylist(playlistId)
+	const tracks = playlist.tracks.items;
     const trackFeatures = await getTracksFeatures(playlist.tracks.items)
+	// console.log(playlist)
+	// console.log(trackFeatures)
+
+	// get artist counts
+	// don't need to pass through what songs they are on
+	const artistCounts = {}
+	tracks.map((key) => {
+		const trackArtists = key.track.artists
+
+		trackArtists.forEach((artistObj) => {
+			if (artistCounts[artistObj.name] !== undefined) {
+				artistCounts[artistObj.name] += 1
+			} else {
+				artistCounts[artistObj.name] = 1
+			}
+		})
+	})
+	console.log(artistCounts)
 
     const featuresSummary = featuresKeys.map((key) =>
       calculateValues(trackFeatures, key)
@@ -69,6 +89,7 @@ function PlaylistSelector({
 
     setActivePlaylist(playlist)
     setFeaturesSummary(featuresSummary)
+	setArtistCounts(artistCounts)
     setLoadingPlaylist(false)
   }
 
