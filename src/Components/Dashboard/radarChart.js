@@ -6,7 +6,7 @@ import * as d3 from "d3"
 import { useGetTrackFeatures } from "../../data"
 
 const Radar = ({ featuresSummary, selectedTrack, loading }) => {
-  console.log("selectedTrack:", selectedTrack)
+  //console.log("selectedTrack:", selectedTrack)
   const [height, setHeight] = React.useState(0)
   const { data: features } = useGetTrackFeatures(selectedTrack?.id)
 
@@ -14,37 +14,41 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     if (!features) return
 
     const width = svg.node()?.getBoundingClientRect().width
-    let middle = width / 2
 
     if (height !== width) setHeight(width)
 
-    var margin = { top: 200, right: 100, bottom: 200, left: 100 },
-      radarWidth =
-        Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
-      radarHeight = Math.min(
-        width,
-        window.innerHeight - margin.top - margin.bottom - 20
-      )
+    var margin = { top: 0, right: 100, bottom: 0, left: 100 },
+      radarWidth = width - margin.left - margin.right,
+      radarHeight = width - margin.top - margin.bottom
 
     var color = d3.scaleOrdinal().range(["#EDC951", "#CC333F", "#00A0B0"])
 
     // Scales for each attr
-    let genericScale = d3.scaleLinear().domain([0, 1]).range([0, 15])
+    let genericScale = d3
+      .scaleLinear()
+      .domain([0, 1])
+      .range([0, radarWidth / 2])
 
-    let loudnessScale = d3.scaleLinear().domain([-25, 0]).range([0, 3])
+    let loudnessScale = d3
+      .scaleLinear()
+      .domain([-25, 0])
+      .range([0, radarWidth / 2])
 
-    let tempoScale = d3.scaleLinear().domain([50, 250]).range([0, 3])
+    let tempoScale = d3
+      .scaleLinear()
+      .domain([50, 250])
+      .range([0, radarWidth / 2])
 
-    function scaleValue(attrData) {
-      if (attrData.key === "loudness") return loudnessScale(attrData.value)
-      if (attrData.key === "tempo") return tempoScale(attrData.value)
+    function scaleValue(attrData, index) {
+      if (index === 4) return loudnessScale(attrData)
+      if (index === 5) return tempoScale(attrData)
       return genericScale(attrData.value)
     }
 
     var cfg = {
       w: radarWidth,
       h: radarHeight,
-      margin: margin,
+      margin,
       levels: 5, //How many levels or inner circles should there be drawn
       maxValue: 3, //What is the value that the biggest circle will represent
       labelFactor: 1.25, //How much farther than the radius of the outer circle should the labels be placed
@@ -54,7 +58,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       opacityCircles: 0.1, //The opacity of the circles of each blob
       strokeWidth: 2, //The width of the stroke around each blob
       roundStrokes: true, //If true the area and stroke will follow a round path (cardinal-closed)
-      color: color, //Color function
+      color, //Color function
     }
 
     if (featuresSummary) {
@@ -78,115 +82,106 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       .attr("class", "radar")
 
     //Append a g element
-    var g = svg
-      .append("g")
-      .attr(
-        "transform",
-        "translate(" +
-          (cfg.w / 2 + cfg.margin.left) +
-          "," +
-          (cfg.h / 2 + 50) +
-          ")"
-      )
-
-    //draw circular grid
-    //Wrapper for the grid & axes
-    var axisGrid = g.append("g").attr("class", "axisWrapper")
-
-    //Draw the background circles
-    axisGrid
-      .selectAll(".levels")
-      .data(d3.range(1, cfg.levels + 1).reverse())
-      .enter()
-      .append("circle")
-      .attr("class", "gridCircle")
-      .attr("r", function (d, i) {
-        return (radius / cfg.levels) * d
-      })
-      .style("fill", "#CDCDCD")
-      .style("stroke", "#CDCDCD")
-      .style("fill-opacity", cfg.opacityCircles)
-    // .style("filter" , "url(#glow)");
-
-    //Text indicating at what % each level is
-    axisGrid
-      .selectAll(".axisLabel")
-      .data(d3.range(1, cfg.levels + 1).reverse())
-      .enter()
-      .append("text")
-      .attr("class", "axisLabel")
-      .attr("x", 4)
-      .attr("y", function (d) {
-        return (-d * radius) / cfg.levels
-      })
-      .attr("dy", "0.4em")
-      .style("font-size", "10px")
-      .attr("fill", "#737373")
-      .text(function (d, i) {
-        return Format((cfg.maxValue * d) / cfg.levels)
-      })
-
-    //draw axis
-    //Create the straight lines radiating outward from the center
-    var axis = axisGrid
-      .selectAll(".axis")
-      .data(allAxis)
-      .enter()
-      .append("g")
-      .attr("class", "axis")
-    //Append the lines
-    axis
-      .append("line")
-      .attr("x1", 0)
-      .attr("y1", 0)
-      .attr("x2", function (d, i) {
-        return (
-          rScale(cfg.maxValue * 1.1) * Math.cos(angleSlice * i - Math.PI / 2)
+    let g = svg.select(".radar-chart-container")
+    let drawElements = g.empty()
+    if (drawElements) {
+      g = svg
+        .append("g")
+        .attr("class", "radar-chart-container")
+        .attr(
+          "transform",
+          "translate(" + (cfg.w / 2 + cfg.margin.left) + "," + cfg.h / 2 + ")"
         )
-      })
-      .attr("y2", function (d, i) {
-        return (
-          rScale(cfg.maxValue * 1.1) * Math.sin(angleSlice * i - Math.PI / 2)
-        )
-      })
-      .attr("class", "line")
-      .style("stroke", "white")
-      .style("stroke-width", "2px")
+      //Wrapper for the grid & axes
 
-    //Append the labels at each axis
-    axis
-      .append("text")
-      .attr("class", "legend")
-      .style("font-size", "11px")
-      .attr("text-anchor", "middle")
-      .attr("dy", "0.35em")
-      .attr("x", function (d, i) {
-        return (
-          rScale(cfg.maxValue * cfg.labelFactor) *
-          Math.cos(angleSlice * i - Math.PI / 2)
-        )
-      })
-      .attr("y", function (d, i) {
-        return (
-          rScale(cfg.maxValue * cfg.labelFactor) *
-          Math.sin(angleSlice * i - Math.PI / 2)
-        )
-      })
-      .text(function (d) {
-        return d
-      })
-      .call(wrap, cfg.wrapWidth)
+      let axisGrid = g.append("g").attr("class", "axisWrapper")
+      //Draw the background circles
+      axisGrid
+        .selectAll(".levels")
+        .data(d3.range(1, cfg.levels + 1).reverse())
+        .enter()
+        .append("circle")
+        .merge(axisGrid)
+        .attr("class", "gridCircle")
+        .attr("r", function (d, i) {
+          return (radius / cfg.levels) * d
+        })
+        .style("fill", "#CDCDCD")
+        .style("stroke", "#CDCDCD")
+        .style("fill-opacity", cfg.opacityCircles)
+      // .style("filter" , "url(#glow)");
 
-    /*var testData = [
-      [3.14 * 1.4],
-      [3.14 * 0.75],
-      [3.14 * 1.25],
-      [3.14 * 1.5],
-      [3.14 * 1.75],
-      [3.14 * 2],
-    ]*/
+      //Text indicating at what % each level is
+      axisGrid
+        .selectAll(".axisLabel")
+        .data(d3.range(1, cfg.levels + 1).reverse())
+        .enter()
+        .append("text")
+        .attr("class", "axisLabel")
+        .attr("x", 4)
+        .attr("y", function (d) {
+          return (-d * radius) / cfg.levels
+        })
+        .attr("dy", "0.4em")
+        .style("font-size", "10px")
+        .attr("fill", "#737373")
+        .text(function (d, i) {
+          return Format((cfg.maxValue * d) / cfg.levels)
+        })
 
-    const data = [
+      //draw axis
+      //Create the straight lines radiating outward from the center
+      var axis = axisGrid
+        .selectAll(".axis")
+        .data(allAxis)
+        .enter()
+        .append("g")
+        .attr("class", "axis")
+
+      //Append the lines
+      axis
+        .append("line")
+        .attr("x1", 0)
+        .attr("y1", 0)
+        .attr("x2", function (d, i) {
+          return (
+            rScale(cfg.maxValue * 1.1) * Math.cos(angleSlice * i - Math.PI / 2)
+          )
+        })
+        .attr("y2", function (d, i) {
+          return (
+            rScale(cfg.maxValue * 1.1) * Math.sin(angleSlice * i - Math.PI / 2)
+          )
+        })
+        .attr("class", "line")
+        .style("stroke", "white")
+        .style("stroke-width", "2px")
+      //Append the labels at each axis
+      axis
+        .append("text")
+        .attr("class", "legend")
+        .style("font-size", "11px")
+        .attr("text-anchor", "middle")
+        .attr("dy", "0.35em")
+        .attr("x", function (d, i) {
+          return (
+            rScale(cfg.maxValue * cfg.labelFactor) *
+            Math.cos(angleSlice * i - Math.PI / 2)
+          )
+        })
+        .attr("y", function (d, i) {
+          return (
+            rScale(cfg.maxValue * cfg.labelFactor) *
+            Math.sin(angleSlice * i - Math.PI / 2)
+          )
+        })
+        .text(function (d) {
+          return d
+        })
+        .call(wrap, cfg.wrapWidth)
+    }
+
+    const selectedSongFeatures = [
       { key: "acousticness", value: features.acousticness },
       { key: "danceability", value: features.danceability },
       { key: "energy", value: features.energy },
@@ -196,12 +191,22 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       { key: "valence", value: features.valence },
     ]
 
+    const selectedSongFeaturesSimple = [
+      features.acousticness,
+      features.danceability,
+      features.energy,
+      features.instrumentalness,
+      features.loudness,
+      features.tempo,
+      features.valence,
+    ]
+
     //draw radar blobs
     //The radial line function
     var radarLine = d3
       .lineRadial()
-      .radius(function (d) {
-        return scaleValue(d)
+      .radius(function (d, i) {
+        return scaleValue(d, i)
       })
       .angle(function (d, i) {
         return i * angleSlice
@@ -213,11 +218,14 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     // }
 
     //Create a wrapper for the blobs
-    var blobWrapper = g
+    const blobWrapper = g
       .selectAll(".radarWrapper")
-      .data(featuresSummary)
+      .data(selectedSongFeaturesSimple)
+
+    blobWrapper
       .enter()
       .append("g")
+      .merge(blobWrapper)
       .attr("class", "radarWrapper")
 
     //think i need to be passing a list of songs with their attr means into this function for it to properly draw path of blob
@@ -227,7 +235,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       .append("path")
       .attr("class", "radarArea")
       .attr("d", function (d, i) {
-        return radarLine(data)
+        return radarLine(selectedSongFeaturesSimple)
       })
       .style("fill", function (d, i) {
         return cfg.color(i)
