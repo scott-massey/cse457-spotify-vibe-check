@@ -40,6 +40,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       .range([0, radarWidth / 2])
 
     function scaleValue(attrData, index) {
+		console.log(attrData)
       if (index === 4) return loudnessScale(attrData)
       if (index === 5) return tempoScale(attrData)
       return genericScale(attrData.value)
@@ -71,6 +72,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
         angleSlice = (Math.PI * 2) / total //The width in radians of each "slice"
     }
 
+
     //Scale for the radius
     var rScale = d3.scaleLinear().range([0, radius]).domain([0, cfg.maxValue])
 
@@ -84,6 +86,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     //Append a g element
     let g = svg.select(".radar-chart-container")
     let drawElements = g.empty()
+	// var testing = true;
     if (drawElements) {
       g = svg
         .append("g")
@@ -119,7 +122,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
         .append("text")
         .attr("class", "axisLabel")
         .attr("x", 4)
-        .attr("y", function (d) {
+        .attr("y", function (d) {			
           return (-d * radius) / cfg.levels
         })
         .attr("dy", "0.4em")
@@ -185,11 +188,23 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       { key: "acousticness", value: features.acousticness },
       { key: "danceability", value: features.danceability },
       { key: "energy", value: features.energy },
-      { key: "energy", value: features.instrumentalness },
+      { key: "instrumentalness", value: features.instrumentalness },
       { key: "loudness", value: features.loudness },
       { key: "tempo", value: features.tempo },
       { key: "valence", value: features.valence },
     ]
+
+	const selectedSongFeaturesObj = {
+		"acousticness": features.acousticness,
+		"danceability": features.danceability,
+		"energy": features.energy,
+		"instrumentalness": features.instrumentalness,
+		"loudness": features.loudness,
+		"tempo": features.tempo,
+		"valence": features.valence,
+  	}
+
+	console.log(selectedSongFeaturesObj)
 
     const selectedSongFeaturesSimple = [
       features.acousticness,
@@ -200,12 +215,14 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       features.tempo,
       features.valence,
     ]
+	console.log(selectedSongFeaturesSimple)
 
     //draw radar blobs
     //The radial line function
     var radarLine = d3
       .lineRadial()
       .radius(function (d, i) {
+		console.log(scaleValue(d, i))
         return scaleValue(d, i)
       })
       .angle(function (d, i) {
@@ -220,7 +237,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     //Create a wrapper for the blobs
     const blobWrapper = g
       .selectAll(".radarWrapper")
-      .data(selectedSongFeaturesSimple)
+      .data(selectedSongFeaturesObj)
 
     blobWrapper
       .enter()
@@ -235,7 +252,8 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       .append("path")
       .attr("class", "radarArea")
       .attr("d", function (d, i) {
-        return radarLine(selectedSongFeaturesSimple)
+		console.log('calling radarLine from blobWrapper')
+        return radarLine(selectedSongFeaturesObj)
       })
       .style("fill", function (d, i) {
         return cfg.color(i)
@@ -287,6 +305,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       })
       .style("fill", "red")
       .style("fill-opacity", 0.8)
+
 
     //wrap helper function
     //Wraps SVG text
