@@ -55,6 +55,7 @@ const Dashboard = (props) => {
                   featuresSummary={featuresSummary}
                   activePlaylist={activePlaylist}
                   loading={loadingPlaylist}
+                  selectedTrack={selectedTrack}
                 />
               </Box>
               <Box sx={{ height: "100%" }}>

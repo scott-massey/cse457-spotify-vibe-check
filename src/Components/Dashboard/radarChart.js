@@ -4,7 +4,6 @@ import { useD3 } from "../hooks/useD3"
 import React from "react"
 import * as d3 from "d3"
 import { useGetTrackFeatures } from "../../data"
-import { blob } from "d3"
 
 const Radar = ({ featuresSummary, selectedTrack, loading }) => {
   //console.log("selectedTrack:", selectedTrack)
@@ -215,7 +214,6 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       features.tempo,
       features.valence,
     ]
-    console.log(selectedSongFeaturesSimple)
 
     //draw radar blobs
     //The radial line function
@@ -248,7 +246,6 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       .attr("class", "radarArea")
       .attr("d", radarLine)
       .style("fill", function (d, i) {
-        console.log("fill color", cfg.color(i))
         return cfg.color(i)
       })
       .style("fill-opacity", cfg.opacityArea)
