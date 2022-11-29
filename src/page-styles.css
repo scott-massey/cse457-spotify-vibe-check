@@ -13,3 +13,7 @@ body {
   align-items: center;
   height: 100%;
 }
+
+.hoverColor {
+	fill: #0047AB;
+}

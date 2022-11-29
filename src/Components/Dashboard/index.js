@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { CssBaseline, Box, Container } from "@mui/material"
 import PlaylistSelector from "./PlaylistSelector"
 import IQR from "./iqrVis"
+import ArtistBubbles from "./ArtistBubbles"
 import Radar from "./radarChart"
 import SongSelector from "./SongSelector"
 
@@ -14,6 +15,7 @@ const Dashboard = (props) => {
   const [activePlaylist, setActivePlaylist] = useState(null)
   const [loadingPlaylist, setLoadingPlaylist] = useState(false)
   const [featuresSummary, setFeaturesSummary] = useState(null)
+  const [artistCounts, setArtistCounts] = useState(null)
   const [selectedTrack, setSelectedTrack] = useState(null)
 
   return (
@@ -37,6 +39,7 @@ const Dashboard = (props) => {
               setActivePlaylist={setActivePlaylist}
               setLoadingPlaylist={setLoadingPlaylist}
               setFeaturesSummary={setFeaturesSummary}
+			        setArtistCounts={setArtistCounts}
               setSelectedTrack={setSelectedTrack}
             />
           </Box>
@@ -89,11 +92,8 @@ const Dashboard = (props) => {
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
-            <Box sx={{ width: "100%" }}>
-              <p>genre bubble chart</p>
-            </Box>
-            <Box sx={{ width: "100%" }}>
-              <p>artist bubble chart</p>
+            <Box sx={{width: "100%"}}>
+              <ArtistBubbles data={artistCounts} loading={loadingPlaylist}/>
             </Box>
           </Box>
         </Box>
