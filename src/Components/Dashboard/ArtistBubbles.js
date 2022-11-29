@@ -26,16 +26,16 @@ const ArtistBubbles = ({ data, loading }) => {
 	}
 	if (!data) {
 		return (
-			<Box>Bubbles</Box>
+			<Box></Box>
 		)
 	}
 	return(
 		<Box>
-			<Box id="artist-bubbles-header">
-				<Typography>Arists in this playlist:</Typography>
+			<Box id="artist-bubbles-header" sx={{width: '500px', textAlign: 'center'}}>
+				<h3 sx={{marginBottom: '-20px', textAlign: 'center'}}>Arists in this Playlist</h3>
 			</Box>
 			<Box id="artist-bubbles-container" ></Box>
-			<Box sx={{minHeight: "40px"}}>
+			<Box sx={{minHeight: "40px", width: '500px', textAlign: 'center'}}>
 				{activeArtist && <Typography>{activeArtist} - {activeCount} songs in this playlist</Typography>}
 
 			</Box>
@@ -84,11 +84,7 @@ function bubbleChart() {
 	// const fillColour = d3.scaleOrdinal()
 	// 	.domain(["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"])
 	// 	.range(["#0074D9", "#7FDBFF", "#39CCCC", "#3D9970", "#AAAAAA"]);
-  
-	// data manipulation function takes raw data from csv and converts it into an array of node objects
-	// each node will store data and visualisation values to draw a bubble
-	// rawData is expected to be an array of data objects, read in d3.csv
-	// function returns the new node array, with a node for each element in the rawData input
+
 	function createNodes(rawData) {
 		// console.log(rawData)
 
@@ -100,7 +96,7 @@ function bubbleChart() {
 	  // size bubbles based on area
 	  const radiusScale = d3.scaleSqrt()
 		.domain([0, maxSize])
-		.range([0, 36])
+		.range([0, (maxSize > 1) ? 36 : 24])
   
 	  // use map() to convert raw data into node data
 	  const myNodes = Object.entries(rawData).map(d => ({

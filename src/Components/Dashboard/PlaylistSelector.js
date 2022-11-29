@@ -25,7 +25,7 @@ function PlaylistSelector({
   setActivePlaylist,
   setLoadingPlaylist,
   setFeaturesSummary,
-  setArtistCounts
+  setArtistCounts,
   setSelectedTrack,
 }) {
   const { data: { items = [] } = {} } = useCurrentUserPlaylists()
@@ -81,7 +81,7 @@ function PlaylistSelector({
 			}
 		})
 	})
-	console.log(artistCounts)
+	// console.log(artistCounts)
 
     const featuresSummary = featuresKeys.map((key) =>
       calculateValues(trackFeatures, key)
@@ -90,7 +90,7 @@ function PlaylistSelector({
 
     setActivePlaylist(playlist)
     setFeaturesSummary(featuresSummary)
-	  setArtistCounts(artistCounts)
+	setArtistCounts(artistCounts)
     setSelectedTrack(null)
     setLoadingPlaylist(false)
   }
@@ -103,12 +103,27 @@ function PlaylistSelector({
     const tracks = obamaTracks[playlist.id]
     const trackFeatures = obamaTrackFeatures[playlist.id]
     // console.log(trackFeatures)
+
+	const artistCounts = {}
+	tracks.map((key) => {
+		const trackArtists = key.track.artists
+
+		trackArtists.forEach((artistObj) => {
+			if (artistCounts[artistObj.name] !== undefined) {
+				artistCounts[artistObj.name] += 1
+			} else {
+				artistCounts[artistObj.name] = 1
+			}
+		})
+	})
+	console.log(artistCounts)
     const featuresSummary = featuresKeys.map((key) =>
       calculateValues(trackFeatures, key)
     )
 
     setActivePlaylist(playlist)
     setFeaturesSummary(featuresSummary)
+	setArtistCounts(artistCounts)
     setSelectedTrack(null)
     setLoadingPlaylist(false)
   }
