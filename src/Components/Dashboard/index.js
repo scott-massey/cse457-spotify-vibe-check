@@ -85,7 +85,7 @@ const Dashboard = (props) => {
 
           <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
             <Box sx={{width: "100%"}}>
-              <ArtistBubbles data={artistCounts} />
+              <ArtistBubbles data={artistCounts} loading={loadingPlaylist}/>
             </Box>
           </Box>
         </Box>
