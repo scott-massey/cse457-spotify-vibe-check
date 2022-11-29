@@ -4,6 +4,7 @@ import { useD3 } from "../hooks/useD3"
 import React from "react"
 import * as d3 from "d3"
 import { useGetTrackFeatures } from "../../data"
+import { blob } from "d3"
 
 const Radar = ({ featuresSummary, selectedTrack, loading }) => {
   //console.log("selectedTrack:", selectedTrack)
@@ -40,10 +41,9 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       .range([0, radarWidth / 2])
 
     function scaleValue(attrData, index) {
-		console.log(attrData)
       if (index === 4) return loudnessScale(attrData)
       if (index === 5) return tempoScale(attrData)
-      return genericScale(attrData.value)
+      return genericScale(attrData)
     }
 
     var cfg = {
@@ -72,7 +72,6 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
         angleSlice = (Math.PI * 2) / total //The width in radians of each "slice"
     }
 
-
     //Scale for the radius
     var rScale = d3.scaleLinear().range([0, radius]).domain([0, cfg.maxValue])
 
@@ -86,7 +85,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     //Append a g element
     let g = svg.select(".radar-chart-container")
     let drawElements = g.empty()
-	// var testing = true;
+    // var testing = true;
     if (drawElements) {
       g = svg
         .append("g")
@@ -122,7 +121,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
         .append("text")
         .attr("class", "axisLabel")
         .attr("x", 4)
-        .attr("y", function (d) {			
+        .attr("y", function (d) {
           return (-d * radius) / cfg.levels
         })
         .attr("dy", "0.4em")
@@ -182,6 +181,9 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
           return d
         })
         .call(wrap, cfg.wrapWidth)
+
+      // add radarWrapper to hold the shape
+      g.append("g").attr("class", "radarWrapper")
     }
 
     const selectedSongFeatures = [
@@ -194,17 +196,15 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       { key: "valence", value: features.valence },
     ]
 
-	const selectedSongFeaturesObj = {
-		"acousticness": features.acousticness,
-		"danceability": features.danceability,
-		"energy": features.energy,
-		"instrumentalness": features.instrumentalness,
-		"loudness": features.loudness,
-		"tempo": features.tempo,
-		"valence": features.valence,
-  	}
-
-	console.log(selectedSongFeaturesObj)
+    const selectedSongFeaturesObj = {
+      acousticness: features.acousticness,
+      danceability: features.danceability,
+      energy: features.energy,
+      instrumentalness: features.instrumentalness,
+      loudness: features.loudness,
+      tempo: features.tempo,
+      valence: features.valence,
+    }
 
     const selectedSongFeaturesSimple = [
       features.acousticness,
@@ -215,14 +215,13 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       features.tempo,
       features.valence,
     ]
-	console.log(selectedSongFeaturesSimple)
+    console.log(selectedSongFeaturesSimple)
 
     //draw radar blobs
     //The radial line function
-    var radarLine = d3
+    const radarLine = d3
       .lineRadial()
       .radius(function (d, i) {
-		console.log(scaleValue(d, i))
         return scaleValue(d, i)
       })
       .angle(function (d, i) {
@@ -235,27 +234,21 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     // }
 
     //Create a wrapper for the blobs
-    const blobWrapper = g
-      .selectAll(".radarWrapper")
-      .data(selectedSongFeaturesObj)
-
-    blobWrapper
-      .enter()
-      .append("g")
-      .merge(blobWrapper)
-      .attr("class", "radarWrapper")
+    const blobWrapper = g.selectAll(".radarWrapper")
+    blobWrapper.selectAll(".radarArea").remove()
 
     //think i need to be passing a list of songs with their attr means into this function for it to properly draw path of blob
     //Right now its using the same fixed test data above (which mimics an individual songs attr values) and plots it
     //Append the backgrounds
     blobWrapper
+      .data([selectedSongFeaturesSimple])
+      .enter()
+      .merge(blobWrapper)
       .append("path")
       .attr("class", "radarArea")
-      .attr("d", function (d, i) {
-		console.log('calling radarLine from blobWrapper')
-        return radarLine(selectedSongFeaturesObj)
-      })
+      .attr("d", radarLine)
       .style("fill", function (d, i) {
+        console.log("fill color", cfg.color(i))
         return cfg.color(i)
       })
       .style("fill-opacity", cfg.opacityArea)
@@ -277,7 +270,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       })
 
     //Create the outlines
-    blobWrapper
+    /*blobWrapper
       .append("path")
       .attr("class", "radarStroke")
       .attr("d", function (d, i) {
@@ -285,10 +278,10 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       })
       .style("stroke-width", cfg.strokeWidth + "px")
       .style("stroke", "red")
-      .style("fill", "red")
+      .style("fill", "red")*/
 
     //Append the circles
-    blobWrapper
+    /*blobWrapper
       .selectAll(".radarCircle")
       .data(function (d, i) {
         return d
@@ -298,14 +291,15 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       .attr("class", "radarCircle")
       .attr("r", cfg.dotRadius)
       .attr("cx", function (d, i) {
-        return scaleValue(d) * Math.cos(angleSlice * i - Math.PI / 2)
+        console.log("scaleValue(d, i)", scaleValue(d, i))
+        return scaleValue(d, i) * Math.cos(angleSlice * i - Math.PI / 2)
       })
       .attr("cy", function (d, i) {
-        return scaleValue(d) * Math.sin(angleSlice * i - Math.PI / 2)
+        return scaleValue(d, i) * Math.sin(angleSlice * i - Math.PI / 2)
       })
       .style("fill", "red")
       .style("fill-opacity", 0.8)
-
+    */
 
     //wrap helper function
     //Wraps SVG text
@@ -376,9 +370,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
           marginLeft: "0px",
         }}
         ref={ref}
-      >
-        <g className="radar-area" />
-      </svg>
+      />
     </>
   )
 }
