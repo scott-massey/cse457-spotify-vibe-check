@@ -67,3 +67,10 @@
   padding: 8px 0px 0px 8px;
   height: 800px;
 }
+
+.container {
+  margin: 0 auto;
+  padding-left: 60px;
+  padding-right: 10px;
+  max-width: 1600px;
+}

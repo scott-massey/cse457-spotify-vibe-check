@@ -17,7 +17,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
 
     if (height !== width) setHeight(width)
 
-    var margin = { top: 0, right: 100, bottom: 0, left: 100 },
+    var margin = { top: 30, right: 60, bottom: 30, left: 60 },
       radarWidth = width - margin.left - margin.right,
       radarHeight = width - margin.top - margin.bottom
 
@@ -67,7 +67,6 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
         }), //Names of each axis
         total = allAxis.length, //The number of different axes
         radius = Math.min(cfg.w / 2, cfg.h / 2), //Radius of the outermost circle
-        Format = d3.format("%"), //Percentage formatting
         angleSlice = (Math.PI * 2) / total //The width in radians of each "slice"
     }
 
@@ -78,7 +77,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     //radar chart SVG
     svg
       .attr("width", cfg.w + cfg.margin.left + cfg.margin.right)
-      .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
+      .attr("height", cfg.h)
       .attr("class", "radar")
 
     //Append a g element
@@ -91,7 +90,11 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
         .attr("class", "radar-chart-container")
         .attr(
           "transform",
-          "translate(" + (cfg.w / 2 + cfg.margin.left) + "," + cfg.h / 2 + ")"
+          "translate(" +
+            (cfg.w / 2 + cfg.margin.left) +
+            "," +
+            (radius + 20) +
+            ")"
         )
       //Wrapper for the grid & axes
 
@@ -127,7 +130,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
         .style("font-size", "10px")
         .attr("fill", "#737373")
         .text(function (d, i) {
-          return Format((cfg.maxValue * d) / cfg.levels)
+          return `${cfg.maxValue * ((100 * d) / cfg.levels)}%`
         })
 
       //draw axis
@@ -361,7 +364,6 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       </div>
       <svg
         style={{
-          height,
           width: "100%",
           marginRight: "0px",
           marginLeft: "0px",

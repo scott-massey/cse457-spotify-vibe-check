@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
 import { SpotifyAuth, Scopes } from "react-spotify-auth"
 import "react-spotify-auth/dist/index.css"
@@ -35,10 +35,9 @@ import GitHubIcon from "@mui/icons-material/GitHub"
 // Data
 import { logout, useGetCurrentUserInfo } from "../data"
 
-
 const NavigationWrapper = ({ children, ...props }) => {
-	let navigate = useNavigate()
-  const [open, setOpen] = useState(true)
+  let navigate = useNavigate()
+  const [open, setOpen] = useState(false)
   const toggleDrawer = () => {
     setOpen(!open)
   }
@@ -46,8 +45,8 @@ const NavigationWrapper = ({ children, ...props }) => {
   const { data: user } = useGetCurrentUserInfo()
 
   return (
-    <div >
-      <Box sx={{  display: "flex" }}>
+    <div>
+      <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
           <Toolbar
@@ -100,8 +99,8 @@ const NavigationWrapper = ({ children, ...props }) => {
               alignItems: "center",
               justifyContent: "flex-end",
               px: [1],
-			//   position: "fixed",
-			//   zIndex: 1,
+              //   position: "fixed",
+              //   zIndex: 1,
             }}
           >
             <IconButton onClick={toggleDrawer}>
@@ -110,36 +109,36 @@ const NavigationWrapper = ({ children, ...props }) => {
           </Toolbar>
           <Divider />
           <List component="nav">
-		  	<ListItemButton onClick={() => navigate("/")}>
-			<ListItemIcon>
-				<DashboardIcon />
-			</ListItemIcon>
-			<ListItemText primary="Dashboard" />
-			</ListItemButton>
-			<ListItemButton  onClick={() => navigate("/process-book")}>
-			<ListItemIcon>
-				<MenuBookIcon />
-			</ListItemIcon>
-			<ListItemText primary="Process Book" />
-			</ListItemButton>
-			<ListItemButton  onClick={() => navigate("/video-demo")}>
-			<ListItemIcon>
-				<VideoLibraryIcon />
-			</ListItemIcon>
-			<ListItemText primary="Video Demo" />
-			</ListItemButton>
-			<ListItemButton  onClick={() => navigate("/spotify-callback")}>
-			<ListItemIcon>
-				<GitHubIcon />
-			</ListItemIcon>
-			<ListItemText primary="GitHub Repo" />
-			</ListItemButton>
-		  </List>
+            <ListItemButton onClick={() => navigate("/")}>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+            <ListItemButton onClick={() => navigate("/process-book")}>
+              <ListItemIcon>
+                <MenuBookIcon />
+              </ListItemIcon>
+              <ListItemText primary="Process Book" />
+            </ListItemButton>
+            <ListItemButton onClick={() => navigate("/video-demo")}>
+              <ListItemIcon>
+                <VideoLibraryIcon />
+              </ListItemIcon>
+              <ListItemText primary="Video Demo" />
+            </ListItemButton>
+            <ListItemButton onClick={() => navigate("/spotify-callback")}>
+              <ListItemIcon>
+                <GitHubIcon />
+              </ListItemIcon>
+              <ListItemText primary="GitHub Repo" />
+            </ListItemButton>
+          </List>
         </Drawer>
         <Box
           component="main"
           sx={{
-			backgroundColor: "red",
+            backgroundColor: "red",
             // backgroundColor: (theme) =>
             //   theme.palette.mode === "light"
             //     ? theme.palette.grey[100]

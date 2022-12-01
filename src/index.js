@@ -26,7 +26,7 @@ const App = () => {
       <ThemeProvider theme={mdTheme}>
         <BrowserRouter>
           <NavigationWrapper />
-          <Box sx={{ paddingLeft: "250px", marginTop: "-270px" }}>
+          <Box sx={{ paddingLeft: "0px", marginTop: "-270px" }}>
             <Routes>
               <Route path="/process-book" element={<ProcessBook />} />
               <Route path="/video-demo" element={<VideoDemo />} />
