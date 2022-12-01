@@ -17,7 +17,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
 
     if (height !== width) setHeight(width)
 
-    var margin = { top: 30, right: 60, bottom: 30, left: 60 },
+    var margin = { top: 30, right: 60, bottom: 40, left: 60 },
       radarWidth = width - margin.left - margin.right,
       radarHeight = width - margin.top - margin.bottom
 
@@ -77,7 +77,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
     //radar chart SVG
     svg
       .attr("width", cfg.w + cfg.margin.left + cfg.margin.right)
-      .attr("height", cfg.h)
+      .attr("height", radius * 2 + cfg.margin.top + cfg.margin.bottom)
       .attr("class", "radar")
 
     //Append a g element
@@ -93,7 +93,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
           "translate(" +
             (cfg.w / 2 + cfg.margin.left) +
             "," +
-            (radius + 20) +
+            (radius + 30) +
             ")"
         )
       //Wrapper for the grid & axes

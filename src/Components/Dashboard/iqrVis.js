@@ -32,7 +32,7 @@ const IQR = ({
       .attr("x", "50%")
       .attr("y", 50)
 
-    let middle = width / 2
+    let middle = (width + 80) / 2
 
     // Scales for each attr
     let genericScale = d3.scaleLinear().domain([0, 1]).range([-150, 150])
@@ -297,7 +297,7 @@ const IQR = ({
 
     const svg = d3.select(ref.current)
     const width = svg.node()?.getBoundingClientRect().width
-    const middle = width / 2
+    const middle = (width + 80) / 2
 
     const features = [
       selectedTrackFeatures.acousticness,

@@ -50,9 +50,10 @@ const Dashboard = (props) => {
                 flexDirection: "row",
                 height: "100%",
                 width: "100%",
+                marginRight: "40px",
               }}
             >
-              <Box sx={{ height: "100%", width: "60%" }}>
+              <Box sx={{ height: "100%", width: "65%" }}>
                 <IQR
                   data={data}
                   featuresSummary={featuresSummary}
@@ -61,7 +62,7 @@ const Dashboard = (props) => {
                   selectedTrack={selectedTrack}
                 />
               </Box>
-              <Box sx={{ height: "100%", width: "40%" }}>
+              <Box sx={{ height: "100%", width: "35%" }}>
                 {selectedTrack && (
                   <Radar
                     data={data}
@@ -78,7 +79,7 @@ const Dashboard = (props) => {
                 display: "flex",
                 flexDirection: "column",
                 height: "100%",
-                minWidth: "250px",
+                minWidth: "300px",
                 maxWidth: "300px",
               }}
             >
