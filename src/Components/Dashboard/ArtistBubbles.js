@@ -184,6 +184,7 @@ function bubbleChart() {
 			.style('text-anchor', 'middle')
 			.style('font-size', 10)
 			.style('fill', 'white')
+			.attr('pointer-events', 'none')
 			.text(d => d.size)
 
 	  // set simulation's nodes to our newly created nodes array

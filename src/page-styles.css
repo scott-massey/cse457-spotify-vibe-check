@@ -17,3 +17,9 @@ body {
 .hoverColor {
 	fill: #0047AB;
 }
+
+.bubbles-test:hover {
+	fill: red
+
+
+}
