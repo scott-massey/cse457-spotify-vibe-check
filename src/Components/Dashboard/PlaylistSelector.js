@@ -62,26 +62,27 @@ function PlaylistSelector({
     setLoadingPlaylist(true)
 
     const playlist = await getPlaylist(playlistId)
-	const tracks = playlist.tracks.items;
+    const tracks = playlist.tracks.items
     const trackFeatures = await getTracksFeatures(playlist.tracks.items)
-	// console.log(playlist)
-	// console.log(trackFeatures)
+    // console.log(playlist)
+    // console.log(trackFeatures)
 
-	// get artist counts
-	// don't need to pass through what songs they are on
-	const artistCounts = {}
-	tracks.map((key) => {
-		const trackArtists = key.track.artists
+    // get artist counts
+    // don't need to pass through what songs they are on
+    const artistCounts = {}
+    tracks.map((key) => {
+      const trackArtists = key.track.artists
 
-		trackArtists.forEach((artistObj) => {
-			if (artistCounts[artistObj.name] !== undefined) {
-				artistCounts[artistObj.name] += 1
-			} else {
-				artistCounts[artistObj.name] = 1
-			}
-		})
-	})
-	// console.log(artistCounts)
+      trackArtists.forEach((artistObj) => {
+        if (artistCounts[artistObj.name] !== undefined) {
+          artistCounts[artistObj.name] += 1
+        } else {
+          artistCounts[artistObj.name] = 1
+        }
+      })
+      return null
+    })
+    // console.log(artistCounts)
 
     const featuresSummary = featuresKeys.map((key) =>
       calculateValues(trackFeatures, key)
@@ -90,7 +91,7 @@ function PlaylistSelector({
 
     setActivePlaylist(playlist)
     setFeaturesSummary(featuresSummary)
-	setArtistCounts(artistCounts)
+    setArtistCounts(artistCounts)
     setSelectedTrack(null)
     setLoadingPlaylist(false)
   }
@@ -104,26 +105,27 @@ function PlaylistSelector({
     const trackFeatures = obamaTrackFeatures[playlist.id]
     // console.log(trackFeatures)
 
-	const artistCounts = {}
-	tracks.map((key) => {
-		const trackArtists = key.track.artists
+    const artistCounts = {}
+    tracks.map((key) => {
+      const trackArtists = key.track.artists
 
-		trackArtists.forEach((artistObj) => {
-			if (artistCounts[artistObj.name] !== undefined) {
-				artistCounts[artistObj.name] += 1
-			} else {
-				artistCounts[artistObj.name] = 1
-			}
-		})
-	})
-	console.log(artistCounts)
+      trackArtists.forEach((artistObj) => {
+        if (artistCounts[artistObj.name] !== undefined) {
+          artistCounts[artistObj.name] += 1
+        } else {
+          artistCounts[artistObj.name] = 1
+        }
+      })
+      return null
+    })
+    console.log(artistCounts)
     const featuresSummary = featuresKeys.map((key) =>
       calculateValues(trackFeatures, key)
     )
 
     setActivePlaylist(playlist)
     setFeaturesSummary(featuresSummary)
-	setArtistCounts(artistCounts)
+    setArtistCounts(artistCounts)
     setSelectedTrack(null)
     setLoadingPlaylist(false)
   }

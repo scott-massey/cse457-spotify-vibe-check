@@ -32,7 +32,7 @@ const IQR = ({
       .attr("x", "50%")
       .attr("y", 50)
 
-    let middle = width / 2
+    let middle = (width + 80) / 2
 
     // Scales for each attr
     let genericScale = d3.scaleLinear().domain([0, 1]).range([-150, 150])
@@ -86,7 +86,7 @@ const IQR = ({
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        return middle + scaleValue(d, "min")
+        return middle + scaleValue(d, "q1")
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -104,7 +104,7 @@ const IQR = ({
           .attr("y", d3.select(this)._groups[0][0].cy.baseVal.value - 15)
           .style("fill", "red")
           .style("font-size", 10)
-          .text(d.min)
+          .text(d.q1)
       })
       .on("mouseout", function (d, i) {
         let label = d3.select("text.avgLabel")
@@ -116,7 +116,7 @@ const IQR = ({
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        return middle + scaleValue(d, "max")
+        return middle + scaleValue(d, "q3")
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -134,7 +134,7 @@ const IQR = ({
           .attr("y", d3.select(this)._groups[0][0].cy.baseVal.value - 15)
           .style("font-size", 10)
           .style("fill", "green")
-          .text(d.max)
+          .text(d.q3)
       })
       .on("mouseout", function (d, i) {
         let label = d3.select("text.avgLabel")
@@ -297,7 +297,7 @@ const IQR = ({
 
     const svg = d3.select(ref.current)
     const width = svg.node()?.getBoundingClientRect().width
-    const middle = width / 2
+    const middle = (width + 80) / 2
 
     const features = [
       selectedTrackFeatures.acousticness,

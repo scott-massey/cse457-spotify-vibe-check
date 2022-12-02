@@ -21,7 +21,7 @@ const Dashboard = (props) => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container>
+      <div className="container">
         <Box sx={{ width: "250px", height: "64px" }} />
         <Box
           sx={{
@@ -39,7 +39,7 @@ const Dashboard = (props) => {
               setActivePlaylist={setActivePlaylist}
               setLoadingPlaylist={setLoadingPlaylist}
               setFeaturesSummary={setFeaturesSummary}
-			        setArtistCounts={setArtistCounts}
+              setArtistCounts={setArtistCounts}
               setSelectedTrack={setSelectedTrack}
             />
           </Box>
@@ -47,12 +47,13 @@ const Dashboard = (props) => {
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "column",
+                flexDirection: "row",
                 height: "100%",
                 width: "100%",
+                marginRight: "40px",
               }}
             >
-              <Box sx={{ height: "100%" }}>
+              <Box sx={{ height: "100%", width: "65%" }}>
                 <IQR
                   data={data}
                   featuresSummary={featuresSummary}
@@ -61,7 +62,7 @@ const Dashboard = (props) => {
                   selectedTrack={selectedTrack}
                 />
               </Box>
-              <Box sx={{ height: "100%" }}>
+              <Box sx={{ height: "100%", width: "35%" }}>
                 {selectedTrack && (
                   <Radar
                     data={data}
@@ -92,12 +93,12 @@ const Dashboard = (props) => {
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
-            <Box sx={{width: "100%"}}>
-              <ArtistBubbles data={artistCounts} loading={loadingPlaylist}/>
+            <Box sx={{ width: "100%" }}>
+              <ArtistBubbles data={artistCounts} loading={loadingPlaylist} />
             </Box>
           </Box>
         </Box>
-      </Container>
+      </div>
     </React.Fragment>
   )
 }
