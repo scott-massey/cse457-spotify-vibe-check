@@ -86,7 +86,7 @@ const IQR = ({
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        return middle + scaleValue(d, "q1")
+        return middle + scaleValue(d, "min")
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -104,7 +104,7 @@ const IQR = ({
           .attr("y", d3.select(this)._groups[0][0].cy.baseVal.value - 15)
           .style("fill", "red")
           .style("font-size", 10)
-          .text(d.q1)
+          .text(d.min)
       })
       .on("mouseout", function (d, i) {
         let label = d3.select("text.avgLabel")
@@ -116,7 +116,7 @@ const IQR = ({
       .enter()
       .append("circle")
       .attr("cx", function (d) {
-        return middle + scaleValue(d, "q3")
+        return middle + scaleValue(d, "max")
       })
       .attr("cy", function (d, i) {
         return 30 + 30 * i
@@ -134,7 +134,7 @@ const IQR = ({
           .attr("y", d3.select(this)._groups[0][0].cy.baseVal.value - 15)
           .style("font-size", 10)
           .style("fill", "green")
-          .text(d.q3)
+          .text(d.max)
       })
       .on("mouseout", function (d, i) {
         let label = d3.select("text.avgLabel")
@@ -170,6 +170,50 @@ const IQR = ({
       .attr("stroke-width", 2)
       .style("stroke-opacity", 0.5)
       .attr("fill", "none")
+
+    //draw q1 lines for each horizontal IQR line
+    iqrLine
+    .enter()
+    .append("line")
+    .attr("x1", function (d) {
+      return middle + scaleValue(d, "q1")
+    })
+    .attr("y1", function (d, i) {
+      return i * 30 + 25
+    })
+    .attr("x2", function (d) {
+      return middle + scaleValue(d, "q1")
+    })
+    .attr("y2", function (d, i) {
+      return i * 30 + 35
+    })
+    .merge(iqrLine)
+    .attr("stroke", "black")
+    .attr("stroke-width", 2)
+    .style("stroke-opacity", 0.5)
+    .attr("fill", "none")
+
+    //draw q3 lines for each horizontal IQR line
+    iqrLine
+    .enter()
+    .append("line")
+    .attr("x1", function (d) {
+      return middle + scaleValue(d, "q3")
+    })
+    .attr("y1", function (d, i) {
+      return i * 30 + 25
+    })
+    .attr("x2", function (d) {
+      return middle + scaleValue(d, "q3")
+    })
+    .attr("y2", function (d, i) {
+      return i * 30 + 35
+    })
+    .merge(iqrLine)
+    .attr("stroke", "black")
+    .attr("stroke-width", 2)
+    .style("stroke-opacity", 0.5)
+    .attr("fill", "none")
 
     iqrLine.exit().remove()
 
