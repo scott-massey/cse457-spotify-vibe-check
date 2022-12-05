@@ -31,11 +31,12 @@ import DashboardIcon from "@mui/icons-material/Dashboard"
 import MenuBookIcon from "@mui/icons-material/MenuBook"
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary"
 import GitHubIcon from "@mui/icons-material/GitHub"
+import QuestionMark from "@mui/icons-material/QuestionMark"
 
 // Data
 import { logout, useGetCurrentUserInfo } from "../data"
 
-const NavigationWrapper = ({ children, ...props }) => {
+const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
   let navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const toggleDrawer = () => {
@@ -132,6 +133,12 @@ const NavigationWrapper = ({ children, ...props }) => {
                 <GitHubIcon />
               </ListItemIcon>
               <ListItemText primary="GitHub Repo" />
+            </ListItemButton>
+            <ListItemButton onClick={openHelpModal}>
+              <ListItemIcon>
+                <QuestionMark />
+              </ListItemIcon>
+              <ListItemText primary="Help" />
             </ListItemButton>
           </List>
         </Drawer>
