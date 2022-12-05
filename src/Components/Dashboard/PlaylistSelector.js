@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Typography } from "@mui/material"
+import { Box, Typography, Card, CardMedia, CardContent } from "@mui/material"
 import PropTypes from "prop-types"
 import testCover from "../../Resources/img/testCover1.jpg"
 import * as d3 from "d3"
@@ -64,8 +64,6 @@ function PlaylistSelector({
     const playlist = await getPlaylist(playlistId)
     const tracks = playlist.tracks.items
     const trackFeatures = await getTracksFeatures(playlist.tracks.items)
-    // console.log(playlist)
-    // console.log(trackFeatures)
 
     // get artist counts
     // don't need to pass through what songs they are on
@@ -82,7 +80,6 @@ function PlaylistSelector({
       })
       return null
     })
-    // console.log(artistCounts)
 
     const featuresSummary = featuresKeys.map((key) =>
       calculateValues(trackFeatures, key)
@@ -98,8 +95,6 @@ function PlaylistSelector({
 
   async function HandleClickObama(playlist) {
     setLoadingPlaylist(true)
-    // console.log(playlist)
-    // console.log(playlist.tracks.items)
 
     const tracks = obamaTracks[playlist.id]
     const trackFeatures = obamaTrackFeatures[playlist.id]
@@ -130,43 +125,54 @@ function PlaylistSelector({
     setLoadingPlaylist(false)
   }
 
+  	function shortenName(name) {
+		if (name.length > 20) {
+			return name.substring(0, 20).trim() + '...';
+		}
+		return name;
+	};
+
   const getPlaylistItem = (playlist, id) => {
     const active = activePlaylist ? activePlaylist.id === playlist.id : false
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          height: "150px",
-          width: "120px",
-          maxWidth: "120px",
-          marginLeft: "10px",
-          marginRight: "10px",
-          backgroundColor: active ? "lightblue" : "none",
-          "&:hover": {
-            cursor: "pointer",
-          },
-        }}
-        onClick={() => {
-          if (user) HandleClick(playlist.id)
-          else HandleClickObama(playlist)
-        }}
-        key={id}
-      >
-        <Box
-          component="img"
-          sx={{ width: "80px", height: "80px" }}
-          src={
-            (playlist?.images?.length && playlist?.images[0]?.url) || testCover
-          }
-          alt="playlist"
-        />
-        <Typography sx={{ textAlign: "center", overflowX: "none" }}>
-          {playlist.name}
-        </Typography>
-      </Box>
-    )
+
+	return (
+		<Card
+		  sx={{
+			display: "flex",
+			flexDirection: "column",
+			alignItems: "center",
+			height: "140px",
+			minWidth: "100px",
+			maxWidth: "100px",
+			marginLeft: "10px",
+			marginRight: "10px",
+			backgroundColor: active ? "lightblue" : "none",
+			"&:hover": {
+			  cursor: "pointer",
+			},
+		  }}
+		  onClick={() => {
+			if (user) HandleClick(playlist.id)
+			else HandleClickObama(playlist)
+		  }}
+		  key={id}
+		>
+			<CardMedia 
+				component="img"
+				alt="album cover"
+				height="80"
+				sx={{minHeight: "80px"}}
+				image={(playlist?.images?.length && playlist?.images[0]?.url) || testCover}
+			/>
+			<CardContent sx={{paddingBottom: 0, paddingRight: "4px", paddingLeft: "4px", paddingTop: '8px'}}>
+				<Typography sx={{ textAlign: "center", overflowX: "none", fontSize: '0.8em', 
+				// overflow: 'hidden', whiteSpace: 'nowrap' 
+				}}>
+					{shortenName(playlist.name)}
+				</Typography>
+			</CardContent>
+		</Card>
+	  )
   }
 
   return (
@@ -175,12 +181,12 @@ function PlaylistSelector({
         display: "flex",
         flexDirection: "row",
         flexGrow: 1,
-        minHeight: "250px",
+        minHeight: "200px",
         justifyContent: "flex-start",
         alignItems: "center",
         paddingLeft: "10px",
         paddingRight: "10px",
-        overflowX: "auto",
+        overflowX: "scroll",
         // overflowY: "hidden",
       }}
     >
