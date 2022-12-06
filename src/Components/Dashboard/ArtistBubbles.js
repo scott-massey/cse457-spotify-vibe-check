@@ -48,8 +48,19 @@ const ArtistBubbles = ({ data, loading }) => {
 
 // bubbleChart creation function; instantiate new bubble chart given a DOM element to display it in and a dataset to visualise
 function bubbleChart() {
-	const width = 500;
-	const height = 500;
+	// const width = 500;
+	// const height = 500;
+	const artistCount = Object.keys(data).length;
+	const artistMultiplier = Math.ceil(Math.sqrt(artistCount))
+	// const artistCount = Math.ceil(Math.sqrt(Object.keys(data).length))
+	const trackCount = Object.values(data).reduce((a, b) => a + b, 0)
+	const sizeMultiplier = (artistCount * 1.5 < trackCount ? 60 : 70)
+	const fixed = artistMultiplier * sizeMultiplier;
+	const width = fixed;
+	const height = fixed;
+	// console.log({artistCount, trackCount, artistMultiplier, sizeMultiplier, fixed})
+
+	// console.log(Math.ceil(Math.sqrt(Object.keys(data).length)))
   
 	// location to centre the bubbles
 	const centre = { x: width/2, y: height/2 };
@@ -154,6 +165,7 @@ function bubbleChart() {
 		.append('svg')
 		.attr('width', width)
 		.attr('height', height)
+		// .style('background-color', 'lightgreen')
   
 	  // bind nodes data to circle elements
 	  const elements = svg.selectAll('.bubble')
@@ -184,6 +196,7 @@ function bubbleChart() {
 			.style('text-anchor', 'middle')
 			.style('font-size', 10)
 			.style('fill', 'white')
+			.attr('pointer-events', 'none')
 			.text(d => d.size)
 
 	  // set simulation's nodes to our newly created nodes array
@@ -215,6 +228,7 @@ function bubbleChart() {
   // calls bubble chart function to display inside #vis div
 function display(data) {
 	// new bubble chart instance
+	console.log(data)
 	let myBubbleChart = bubbleChart();
 
 	myBubbleChart('#artist-bubbles-container', data);
