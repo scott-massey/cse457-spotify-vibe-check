@@ -6,7 +6,7 @@ import * as d3 from "d3"
 
 // Data
 import { useCurrentUserPlaylists, useGetCurrentUserInfo } from "../../data"
-import { getPlaylist, getTracksFeatures } from "../../data/api"
+import { getPlaylist, getTracksFeatures, getArtistInfo } from "../../data/api"
 import { obamaAlbums } from "../../data/obama/albums"
 import { obamaTracks } from "../../data/obama/tracks"
 import { obamaTrackFeatures } from "../../data/obama/trackFeatures"
@@ -64,14 +64,26 @@ function PlaylistSelector({
     const playlist = await getPlaylist(playlistId)
     const tracks = playlist.tracks.items
     const trackFeatures = await getTracksFeatures(playlist.tracks.items)
+	console.log(tracks)
 
     // get artist counts
     // don't need to pass through what songs they are on
     const artistCounts = {}
+	let artistIds = []
+
     tracks.map((key) => {
       const trackArtists = key.track.artists
 
       trackArtists.forEach((artistObj) => {
+		console.log(artistObj.id)
+		if (!artistIds.includes(artistObj.id)) {
+			artistIds.push(artistObj.id)
+			// if (artistIds === "") {
+			// 	artistIds += artistObj.id
+			// } else {
+			// 	artistIds += `,${artistObj.id}`
+			// }
+		}
         if (artistCounts[artistObj.name] !== undefined) {
           artistCounts[artistObj.name] += 1
         } else {
@@ -80,6 +92,19 @@ function PlaylistSelector({
       })
       return null
     })
+
+	console.log(artistIds)
+	while (artistIds.length > 50) {
+		artistIds.pop()
+	}
+	console.log(artistIds)
+	const artistString = artistIds.join(',');
+	console.log(artistString)
+
+	const artistInfo = await getArtistInfo(artistString)
+
+
+
 
     const featuresSummary = featuresKeys.map((key) =>
       calculateValues(trackFeatures, key)

@@ -31,6 +31,20 @@ const getPlaylist = async (playlistId) => {
   }
 }
 
+const getArtistInfo = async (artistStr) => {
+	console.log(artistStr)
+	if (!artistStr) return null
+	try {
+		const res = await spotifyAxios.get(
+			`https://api.spotify.com/v1/artists${artistStr}`
+			)
+		console.log(res)
+		return 'yo'
+	} catch (error) {
+		console.log(error)
+	}
+}
+
 const getCurrentUserPlaylists = async () => {
   try {
     const userId = await getUserId()
@@ -92,4 +106,5 @@ export {
   getPlaylist,
   getTracksFeatures,
   getTrackFeatures,
+  getArtistInfo
 }
