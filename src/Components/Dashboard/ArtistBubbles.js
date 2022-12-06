@@ -165,7 +165,7 @@ function bubbleChart() {
 		.append('svg')
 		.attr('width', width)
 		.attr('height', height)
-		.style('background-color', 'lightgreen')
+		// .style('background-color', 'lightgreen')
   
 	  // bind nodes data to circle elements
 	  const elements = svg.selectAll('.bubble')
