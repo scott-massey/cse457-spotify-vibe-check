@@ -187,7 +187,6 @@ function PlaylistSelector({
         paddingLeft: "10px",
         paddingRight: "10px",
         overflowX: "scroll",
-        // overflowY: "hidden",
       }}
     >
       {/* <Box sx={{height: "100px", backgroundColor: "lightblue"}}> */}

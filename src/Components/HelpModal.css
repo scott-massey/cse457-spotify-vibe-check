@@ -1,0 +1,24 @@
+.help-modal-image {
+  display: block;
+  margin: auto;
+  border: 1px solid black;
+}
+
+ul {
+  display: flex;
+  margin-top: 0;
+  flex-direction: column;
+}
+
+.list-horizontal {
+  flex-direction: row;
+}
+
+.help-modal-start {
+  text-align: center;
+  align-items: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
