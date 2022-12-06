@@ -11,13 +11,13 @@
 }
 
 .song-select-track:hover {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #1db954;
+  color: #000000;
 }
 
 .song-select-track-selected {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #1db954 !important;
+  color: #000000;
 }
 
 .song-select-img {

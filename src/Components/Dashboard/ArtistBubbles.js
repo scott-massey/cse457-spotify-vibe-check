@@ -19,12 +19,12 @@ const ArtistBubbles = ({ data, loading }) => {
 
 	}, [data])
 
-	if (loading) {
-		return (
-			<Box>loading...</Box>
-		)
-	}
-	if (!data) {
+	// if (loading) {
+	// 	return (
+	// 		<Box>loading...</Box>
+	// 	)
+	// }
+	if (loading || !data) {
 		return (
 			<Box></Box>
 		)
@@ -34,11 +34,12 @@ const ArtistBubbles = ({ data, loading }) => {
 			<Box id="artist-bubbles-header" sx={{width: '500px', textAlign: 'center'}}>
 				<h3 sx={{marginBottom: '-20px', textAlign: 'center'}}>Arists in this Playlist</h3>
 			</Box>
-			<Box id="artist-bubbles-container" ></Box>
 			<Box sx={{minHeight: "40px", width: '500px', textAlign: 'center'}}>
 				{activeArtist && <Typography>{activeArtist} - {activeCount} songs in this playlist</Typography>}
 
 			</Box>
+			<Box id="artist-bubbles-container" ></Box>
+
 
 		</Box>
 
@@ -177,7 +178,7 @@ function bubbleChart() {
 		.append('circle')
 		.classed('bubble', true)
 		.attr('r', d => d.radius)
-		.attr('fill', "#0096FF")
+		.attr('fill', "#1db954")
 		.on('mouseover', (d) => {
 			d.target.classList.add('hoverColor')
 			setActiveArtist(d.target.__data__.id)

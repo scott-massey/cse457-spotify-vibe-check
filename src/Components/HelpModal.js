@@ -23,6 +23,9 @@ const HelpModal = ({ modalOpen, closeHelpModal, ...props }) => {
     if (step > 0) {
       setStep(step - 1)
     }
+	if (step === 0) {
+		closeHelpModal()
+	}
   }
 
   const renderContent = () => {
@@ -58,10 +61,10 @@ const HelpModal = ({ modalOpen, closeHelpModal, ...props }) => {
             paddingTop: "16px",
           }}
         >
-          <Button variant="contained" onClick={prevStep}>
+          <Button variant="contained" onClick={prevStep} sx={{backgroundColor: "#1db954", '&:hover': {backgroundColor: '#17863d'}}}>
             {step === 0 ? "Close" : "Back"}
           </Button>
-          <Button variant="contained" onClick={nextStep}>
+          <Button variant="contained" onClick={nextStep} sx={{backgroundColor: "#1db954", '&:hover': {backgroundColor: '#17863d'}}}>
             {step === renderFns.length - 1 ? "Close" : "Next"}
           </Button>
         </Box>
@@ -140,6 +143,7 @@ const renderSignIn = () => {
         src={signInButton}
         alt="Sign In Button"
         className="help-modal-image"
+		height="100px"
       />
     </React.Fragment>
   )
@@ -288,7 +292,7 @@ const renderBubbleChart = () => {
         src={bubbleChart}
         alt="Bubble Chart"
         className="help-modal-image"
-        width={400}
+        height={340}
       />
       <Typography variant="body1">
         Hover over any bubble to see the artist's name and the number of songs

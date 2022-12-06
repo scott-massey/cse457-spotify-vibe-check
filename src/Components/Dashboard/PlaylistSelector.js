@@ -126,6 +126,9 @@ function PlaylistSelector({
   }
 
   	function shortenName(name) {
+		if (name.substring(0,12) === "Barack Obama") {
+			name = name.substring(7)
+		}
 		if (name.length > 20) {
 			return name.substring(0, 20).trim() + '...';
 		}
@@ -146,7 +149,7 @@ function PlaylistSelector({
 			maxWidth: "100px",
 			marginLeft: "10px",
 			marginRight: "10px",
-			backgroundColor: active ? "lightblue" : "none",
+			backgroundColor: active ? "#1db954" : "none",
 			"&:hover": {
 			  cursor: "pointer",
 			},
@@ -165,7 +168,8 @@ function PlaylistSelector({
 				image={(playlist?.images?.length && playlist?.images[0]?.url) || testCover}
 			/>
 			<CardContent sx={{paddingBottom: 0, paddingRight: "4px", paddingLeft: "4px", paddingTop: '8px'}}>
-				<Typography sx={{ textAlign: "center", overflowX: "none", fontSize: '0.8em', 
+				<Typography sx={{ textAlign: "center", overflowX: "none", fontSize: '0.8em',
+ 
 				// overflow: 'hidden', whiteSpace: 'nowrap' 
 				}}>
 					{shortenName(playlist.name)}

@@ -49,7 +49,7 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
     <div>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" open={open} sx={{backgroundColor: "#303030"}}>
           <Toolbar
             sx={{
               pr: "24px", // keep right padding when drawer closed
@@ -77,7 +77,7 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
               Spotify Vibe Check
             </Typography>
             {user ? (
-              <Button variant="contained" onClick={logout}>
+              <Button variant="contained" onClick={logout} sx={{backgroundColor: "#1db954", '&:hover': {backgroundColor: "#17863d"}}}>
                 Logout
               </Button>
             ) : (
@@ -145,7 +145,7 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
         <Box
           component="main"
           sx={{
-            backgroundColor: "red",
+            // backgroundColor: "red",
             // backgroundColor: (theme) =>
             //   theme.palette.mode === "light"
             //     ? theme.palette.grey[100]
