@@ -32,14 +32,25 @@ const getPlaylist = async (playlistId) => {
 }
 
 const getArtistInfo = async (artistStr) => {
-	console.log(artistStr)
+	// console.log(artistStr)
 	if (!artistStr) return null
 	try {
 		const res = await spotifyAxios.get(
-			`https://api.spotify.com/v1/artists${artistStr}`
+			`https://api.spotify.com/v1/artists?ids=${artistStr}`
 			)
-		console.log(res)
-		return 'yo'
+		const returnVal = res.data.artists.map((a) => {
+			// if (!a.images[0]) {
+			// 	console.log(a)
+			// }
+			const artistObj = {
+				name: a.name,
+				genres: a.genres,
+				photoUrl: (a.images[0] ? a.images[0].url : null)
+			}
+			return artistObj
+		})
+		// console.log(returnVal)
+		return returnVal
 	} catch (error) {
 		console.log(error)
 	}

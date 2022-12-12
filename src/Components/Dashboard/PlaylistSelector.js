@@ -75,7 +75,7 @@ function PlaylistSelector({
       const trackArtists = key.track.artists
 
       trackArtists.forEach((artistObj) => {
-		console.log(artistObj.id)
+		// console.log(artistObj.id)
 		if (!artistIds.includes(artistObj.id)) {
 			artistIds.push(artistObj.id)
 			// if (artistIds === "") {
@@ -94,14 +94,21 @@ function PlaylistSelector({
     })
 
 	console.log(artistIds)
-	while (artistIds.length > 50) {
-		artistIds.pop()
-	}
-	console.log(artistIds)
-	const artistString = artistIds.join(',');
-	console.log(artistString)
+	// while (artistIds.length > 50) {
+	// 	artistIds.pop()
+	// }
 
-	const artistInfo = await getArtistInfo(artistString)
+
+	var artistInfo = []
+	const chunkSize = 50;
+	for (let i = 0; i < artistIds.length; i += chunkSize) {
+		const chunk = artistIds.slice(i, i + chunkSize);
+		const chunkString = chunk.join(',');
+		const chunkInfo = await getArtistInfo(chunkString)
+		console.log(chunkInfo)
+		artistInfo = artistInfo.concat(chunkInfo)
+	}
+	console.log(artistInfo)
 
 
 
