@@ -8,9 +8,6 @@ import SongSelector from "./SongSelector"
 
 import "./index.css"
 
-//test data for vis
-const data = [{ mean: 0.2 }, { mean: -0.4 }, { mean: 0.6 }, { mean: -0.1 }]
-
 const Dashboard = (props) => {
   const [activePlaylist, setActivePlaylist] = useState(null)
   const [loadingPlaylist, setLoadingPlaylist] = useState(false)
@@ -55,7 +52,6 @@ const Dashboard = (props) => {
             >
               <Box sx={{ height: "100%", width: "65%" }}>
                 <IQR
-                  data={data}
                   featuresSummary={featuresSummary}
                   activePlaylist={activePlaylist}
                   loading={loadingPlaylist}
@@ -65,7 +61,6 @@ const Dashboard = (props) => {
               <Box sx={{ height: "100%", width: "35%" }}>
                 {selectedTrack && (
                   <Radar
-                    data={data}
                     featuresSummary={featuresSummary}
                     activePlaylist={activePlaylist}
                     loading={loadingPlaylist}

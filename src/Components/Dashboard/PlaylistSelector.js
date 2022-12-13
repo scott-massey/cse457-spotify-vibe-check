@@ -84,7 +84,6 @@ function PlaylistSelector({
     const featuresSummary = featuresKeys.map((key) =>
       calculateValues(trackFeatures, key)
     )
-    // console.log(featuresSummary)
 
     setActivePlaylist(playlist)
     setFeaturesSummary(featuresSummary)
@@ -98,7 +97,6 @@ function PlaylistSelector({
 
     const tracks = obamaTracks[playlist.id]
     const trackFeatures = obamaTrackFeatures[playlist.id]
-    // console.log(trackFeatures)
 
     const artistCounts = {}
     tracks.map((key) => {
@@ -113,7 +111,6 @@ function PlaylistSelector({
       })
       return null
     })
-    console.log(artistCounts)
     const featuresSummary = featuresKeys.map((key) =>
       calculateValues(trackFeatures, key)
     )
@@ -125,58 +122,72 @@ function PlaylistSelector({
     setLoadingPlaylist(false)
   }
 
-  	function shortenName(name) {
-		if (name.substring(0,12) === "Barack Obama") {
-			name = name.substring(7)
-		}
-		if (name.length > 20) {
-			return name.substring(0, 20).trim() + '...';
-		}
-		return name;
-	};
+  function shortenName(name) {
+    if (name.substring(0, 12) === "Barack Obama") {
+      name = name.substring(7)
+    }
+    if (name.length > 20) {
+      return name.substring(0, 20).trim() + "..."
+    }
+    return name
+  }
 
   const getPlaylistItem = (playlist, id) => {
     const active = activePlaylist ? activePlaylist.id === playlist.id : false
 
-	return (
-		<Card
-		  sx={{
-			display: "flex",
-			flexDirection: "column",
-			alignItems: "center",
-			height: "140px",
-			minWidth: "100px",
-			maxWidth: "100px",
-			marginLeft: "10px",
-			marginRight: "10px",
-			backgroundColor: active ? "#1db954" : "none",
-			"&:hover": {
-			  cursor: "pointer",
-			},
-		  }}
-		  onClick={() => {
-			if (user) HandleClick(playlist.id)
-			else HandleClickObama(playlist)
-		  }}
-		  key={id}
-		>
-			<CardMedia 
-				component="img"
-				alt="album cover"
-				height="80"
-				sx={{minHeight: "80px"}}
-				image={(playlist?.images?.length && playlist?.images[0]?.url) || testCover}
-			/>
-			<CardContent sx={{paddingBottom: 0, paddingRight: "4px", paddingLeft: "4px", paddingTop: '8px'}}>
-				<Typography sx={{ textAlign: "center", overflowX: "none", fontSize: '0.8em',
- 
-				// overflow: 'hidden', whiteSpace: 'nowrap' 
-				}}>
-					{shortenName(playlist.name)}
-				</Typography>
-			</CardContent>
-		</Card>
-	  )
+    return (
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          height: "140px",
+          minWidth: "100px",
+          maxWidth: "100px",
+          marginLeft: "10px",
+          marginRight: "10px",
+          backgroundColor: active ? "#1db954" : "none",
+          "&:hover": {
+            cursor: "pointer",
+          },
+        }}
+        onClick={() => {
+          if (user) HandleClick(playlist.id)
+          else HandleClickObama(playlist)
+        }}
+        key={id}
+      >
+        <CardMedia
+          component="img"
+          alt="album cover"
+          height="80"
+          sx={{ minHeight: "80px" }}
+          image={
+            (playlist?.images?.length && playlist?.images[0]?.url) || testCover
+          }
+        />
+        <CardContent
+          sx={{
+            paddingBottom: 0,
+            paddingRight: "4px",
+            paddingLeft: "4px",
+            paddingTop: "8px",
+          }}
+        >
+          <Typography
+            sx={{
+              textAlign: "center",
+              overflowX: "none",
+              fontSize: "0.8em",
+
+              // overflow: 'hidden', whiteSpace: 'nowrap'
+            }}
+          >
+            {shortenName(playlist.name)}
+          </Typography>
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
