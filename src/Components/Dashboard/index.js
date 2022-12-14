@@ -59,14 +59,12 @@ const Dashboard = (props) => {
                 />
               </Box>
               <Box sx={{ height: "100%", width: "35%" }}>
-                {selectedTrack && (
-                  <Radar
-                    featuresSummary={featuresSummary}
-                    activePlaylist={activePlaylist}
-                    loading={loadingPlaylist}
-                    selectedTrack={selectedTrack}
-                  />
-                )}
+                <Radar
+                  featuresSummary={featuresSummary}
+                  activePlaylist={activePlaylist}
+                  loading={loadingPlaylist}
+                  selectedTrack={selectedTrack}
+                />
               </Box>
             </Box>
             <Box

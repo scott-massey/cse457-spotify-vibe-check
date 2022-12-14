@@ -13,7 +13,8 @@ const IQR = ({ featuresSummary, loading, activePlaylist, selectedTrack }) => {
   const middle = (width + 80) / 2
 
   if (!selectedTrack) {
-    svg.select(".selected-track").selectAll("circle").remove()
+    console.log("selectedTrack is null")
+    svg.select(".plot-area").selectAll(".selected-track").remove()
   }
 
   // Draw Scaffolds for iqr chart, if needed

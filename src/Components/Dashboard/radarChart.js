@@ -1,51 +1,29 @@
 // code inspo for radar chart
 //  http://bl.ocks.org/nbremer/21746a9668ffdf6d8242
-import { useD3 } from "../hooks/useD3"
-import React from "react"
+import React, { useEffect, useRef, useMemo } from "react"
 import * as d3 from "d3"
 import { useGetTrackFeatures } from "../../data"
 
-const Radar = ({ featuresSummary, selectedTrack, loading }) => {
-  //console.log("selectedTrack:", selectedTrack)
+const Radar = ({ selectedTrack }) => {
   const [height, setHeight] = React.useState(0)
   const { data: features } = useGetTrackFeatures(selectedTrack?.id)
 
-  const renderChart = (svg) => {
-    if (!features) return
+  const ref = useRef()
 
-    const width = svg.node()?.getBoundingClientRect().width
+  const svg = d3.select(ref.current)
+  const width = svg.node()?.getBoundingClientRect().width
 
-    if (height !== width) setHeight(width)
+  if (height !== width) setHeight(width)
 
-    var margin = { top: 30, right: 60, bottom: 40, left: 60 },
-      radarWidth = width - margin.left - margin.right,
-      radarHeight = width - margin.top - margin.bottom
+  const radarWidth = width - margin.left - margin.right
+  const radarHeight = width - margin.top - margin.bottom
 
-    var color = d3.scaleOrdinal().range(["#EDC951", "#CC333F", "#00A0B0"])
+  genericScale.range([0, radarWidth / 2])
+  loudnessScale.range([0, radarWidth / 2])
+  tempoScale.range([0, radarWidth / 2])
 
-    // Scales for each attr
-    let genericScale = d3
-      .scaleLinear()
-      .domain([0, 1])
-      .range([0, radarWidth / 2])
-
-    let loudnessScale = d3
-      .scaleLinear()
-      .domain([-25, 0])
-      .range([0, radarWidth / 2])
-
-    let tempoScale = d3
-      .scaleLinear()
-      .domain([50, 250])
-      .range([0, radarWidth / 2])
-
-    function scaleValue(attrData, index) {
-      if (index === 4) return loudnessScale(attrData)
-      if (index === 5) return tempoScale(attrData)
-      return genericScale(attrData)
-    }
-
-    var cfg = {
+  const cfg = useMemo(() => {
+    return {
       w: radarWidth,
       h: radarHeight,
       margin,
@@ -60,26 +38,40 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       roundStrokes: true, //If true the area and stroke will follow a round path (cardinal-closed)
       color, //Color function
     }
+  }, [radarWidth, radarHeight])
 
-    if (featuresSummary) {
-      var allAxis = featuresSummary.map(function (i, j) {
-          return i.key
-        }), //Names of each axis
-        total = allAxis.length, //The number of different axes
-        radius = Math.min(cfg.w / 2, cfg.h / 2), //Radius of the outermost circle
-        angleSlice = (Math.PI * 2) / total //The width in radians of each "slice"
+  const radius = Math.min(cfg.w / 2, cfg.h / 2)
+  const angleSlice = (Math.PI * 2) / featureNames.length
+
+  //Scale for the radius
+  const rScale = d3.scaleLinear().range([0, radius]).domain([0, cfg.maxValue])
+
+  const previousSelectedTrack = usePrevious(selectedTrack)
+
+  // If the selected song is unselected, remove the blob
+  useEffect(() => {
+    if (!ref) return
+    if (!selectedTrack && previousSelectedTrack) {
+      svg
+        .selectAll(".radar-chart-container")
+        .selectAll(".radarWrapper")
+        .selectAll(".radarArea")
+        .remove()
     }
+  }, [selectedTrack, svg, previousSelectedTrack])
 
-    //Scale for the radius
-    var rScale = d3.scaleLinear().range([0, radius]).domain([0, cfg.maxValue])
-
-    //create containers
-    //radar chart SVG
+  // Modify the svg's width and height if the window is resized
+  useEffect(() => {
+    if (!ref) return
     svg
       .attr("width", cfg.w + cfg.margin.left + cfg.margin.right)
       .attr("height", radius * 2 + cfg.margin.top + cfg.margin.bottom)
       .attr("class", "radar")
+  }, [cfg, radius, svg])
 
+  // Draw the background circles
+  useEffect(() => {
+    if (!ref) return
     //Append a g element
     let g = svg.select(".radar-chart-container")
     let drawElements = g.empty()
@@ -137,7 +129,7 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       //Create the straight lines radiating outward from the center
       var axis = axisGrid
         .selectAll(".axis")
-        .data(allAxis)
+        .data(featureNames)
         .enter()
         .append("g")
         .attr("class", "axis")
@@ -187,26 +179,12 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       // add radarWrapper to hold the shape
       g.append("g").attr("class", "radarWrapper")
     }
+  })
 
-    const selectedSongFeatures = [
-      { key: "acousticness", value: features.acousticness },
-      { key: "danceability", value: features.danceability },
-      { key: "energy", value: features.energy },
-      { key: "instrumentalness", value: features.instrumentalness },
-      { key: "loudness", value: features.loudness },
-      { key: "tempo", value: features.tempo },
-      { key: "valence", value: features.valence },
-    ]
+  useEffect(() => {
+    if (!features || !ref) return
 
-    const selectedSongFeaturesObj = {
-      acousticness: features.acousticness,
-      danceability: features.danceability,
-      energy: features.energy,
-      instrumentalness: features.instrumentalness,
-      loudness: features.loudness,
-      tempo: features.tempo,
-      valence: features.valence,
-    }
+    const g = svg.select(".radar-chart-container")
 
     const selectedSongFeaturesSimple = [
       features.acousticness,
@@ -228,19 +206,11 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
       .angle(function (d, i) {
         return i * angleSlice
       })
-    // .interpolate("linear-closed");
-
-    // if(cfg.roundStrokes) {
-    //     radarLine.interpolate("cardinal-closed");
-    // }
 
     //Create a wrapper for the blobs
     const blobWrapper = g.selectAll(".radarWrapper")
     blobWrapper.selectAll(".radarArea").remove()
 
-    //think i need to be passing a list of songs with their attr means into this function for it to properly draw path of blob
-    //Right now its using the same fixed test data above (which mimics an individual songs attr values) and plots it
-    //Append the backgrounds
     blobWrapper
       .data([selectedSongFeaturesSimple])
       .enter()
@@ -268,99 +238,16 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
           .duration(200)
           .style("fill-opacity", cfg.opacityArea)
       })
-
-    //Create the outlines
-    /*blobWrapper
-      .append("path")
-      .attr("class", "radarStroke")
-      .attr("d", function (d, i) {
-        return radarLine(d)
-      })
-      .style("stroke-width", cfg.strokeWidth + "px")
-      .style("stroke", "red")
-      .style("fill", "red")*/
-
-    //Append the circles
-    /*blobWrapper
-      .selectAll(".radarCircle")
-      .data(function (d, i) {
-        return d
-      })
-      .enter()
-      .append("circle")
-      .attr("class", "radarCircle")
-      .attr("r", cfg.dotRadius)
-      .attr("cx", function (d, i) {
-        console.log("scaleValue(d, i)", scaleValue(d, i))
-        return scaleValue(d, i) * Math.cos(angleSlice * i - Math.PI / 2)
-      })
-      .attr("cy", function (d, i) {
-        return scaleValue(d, i) * Math.sin(angleSlice * i - Math.PI / 2)
-      })
-      .style("fill", "red")
-      .style("fill-opacity", 0.8)
-    */
-
-    //wrap helper function
-    //Wraps SVG text
-    function wrap(text, width) {
-      text.each(function () {
-        var text = d3.select(this),
-          words = text.text().split(/\s+/).reverse(),
-          word,
-          line = [],
-          lineNumber = 0,
-          lineHeight = 1.4, // ems
-          y = text.attr("y"),
-          x = text.attr("x"),
-          dy = parseFloat(text.attr("dy")),
-          tspan = text
-            .text(null)
-            .append("tspan")
-            .attr("x", x)
-            .attr("y", y)
-            .attr("dy", dy + "em")
-
-        while ((word = words.pop())) {
-          line.push(word)
-          tspan.text(line.join(" "))
-          if (tspan.node().getComputedTextLength() > width) {
-            line.pop()
-            tspan.text(line.join(" "))
-            line = [word]
-            tspan = text
-              .append("tspan")
-              .attr("x", x)
-              .attr("y", y)
-              .attr("dy", ++lineNumber * lineHeight + dy + "em")
-              .text(word)
-          }
-        }
-      })
-    } //wrap
-
-    //data length is used as a trigger to re render chartRenderFn when length of data changes
-  }
-
-  const ref = useD3(renderChart, [
-    featuresSummary,
-    loading,
-    selectedTrack,
-    features,
-  ])
-
-  if (!featuresSummary || loading) {
-    return <div></div>
-  }
-
-  if (!selectedTrack) {
-    return <h3>Select a track to see more!</h3>
-  }
+  }, [features, selectedTrack, cfg, svg, angleSlice])
 
   return (
     <>
       <div className="centered">
-        <h3>Radar Chart for {selectedTrack?.name}</h3>
+        <h3>
+          {selectedTrack
+            ? `Radar Chart for ${selectedTrack?.name}`
+            : "Radar Chart"}
+        </h3>
       </div>
       <svg
         style={{
@@ -374,4 +261,79 @@ const Radar = ({ featuresSummary, selectedTrack, loading }) => {
   )
 }
 
+//wrap helper function
+//Wraps SVG text
+const wrap = (text, width) => {
+  text.each(function () {
+    var text = d3.select(this),
+      words = text.text().split(/\s+/).reverse(),
+      word,
+      line = [],
+      lineNumber = 0,
+      lineHeight = 1.4, // ems
+      y = text.attr("y"),
+      x = text.attr("x"),
+      dy = parseFloat(text.attr("dy")),
+      tspan = text
+        .text(null)
+        .append("tspan")
+        .attr("x", x)
+        .attr("y", y)
+        .attr("dy", dy + "em")
+
+    while ((word = words.pop())) {
+      line.push(word)
+      tspan.text(line.join(" "))
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop()
+        tspan.text(line.join(" "))
+        line = [word]
+        tspan = text
+          .append("tspan")
+          .attr("x", x)
+          .attr("y", y)
+          .attr("dy", ++lineNumber * lineHeight + dy + "em")
+          .text(word)
+      }
+    }
+  })
+} //wrap
+
 export default Radar
+
+// Scales for each attr
+const color = d3.scaleOrdinal().range(["#EDC951", "#CC333F", "#00A0B0"])
+const genericScale = d3.scaleLinear().domain([0, 1])
+const loudnessScale = d3.scaleLinear().domain([-25, 0])
+const tempoScale = d3.scaleLinear().domain([50, 250])
+
+const scaleValue = (attrData, index) => {
+  if (index === 4) return loudnessScale(attrData)
+  if (index === 5) return tempoScale(attrData)
+  return genericScale(attrData)
+}
+
+const margin = { top: 30, right: 60, bottom: 40, left: 60 }
+
+const featureNames = [
+  "acousticness",
+  "danceability",
+  "energy",
+  "instrumentalness",
+  "loudness",
+  "tempo",
+  "valence",
+]
+
+// Hook borrowed from https://usehooks.com/usePrevious/
+const usePrevious = (value) => {
+  // The ref object is a generic container whose current property is mutable ...
+  // ... and can hold any value, similar to an instance property on a class
+  const ref = useRef()
+  // Store current value in ref
+  useEffect(() => {
+    ref.current = value
+  }, [value]) // Only re-run if value changes
+  // Return previous value (happens before update in useEffect above)
+  return ref.current
+}
