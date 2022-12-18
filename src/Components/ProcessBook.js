@@ -179,6 +179,14 @@ function ProcessBook() {
           </ul>
         </div>
         <div>
+          <h2>Implementation</h2>
+          <p>
+            The implementation is described, in detail, in the welcome modal
+            that appears when the page loads. You can also access it by clicking
+            on the ? icon in the menu.
+          </p>
+        </div>
+        <div>
           <h2>Evaluation</h2>
           <p>Here are some takeaways we got from our visualizations:</p>
           <ul>
