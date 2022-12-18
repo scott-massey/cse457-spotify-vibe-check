@@ -179,6 +179,44 @@ function ProcessBook() {
           </ul>
         </div>
         <div>
+          <h2>Evaluation</h2>
+          <p>Here are some takeaways we got from our visualizations:</p>
+          <ul>
+            <li>
+              Overall, the visualizations were generally helpful for visualizing
+              the vibes of a playlist.
+            </li>
+            <li>
+              The bigger the playlist, the more likely each attribute would have
+              a wide spread of "vibes".
+            </li>
+            <li>
+              Personally, I (Scott) am not as good at curating specific vibes on
+              playlists than I thought.
+            </li>
+            <li>
+              Visualizing individual songs as specific points on the iqr line
+              chart was incredibly helpful for finding out what songs in the
+              playlist were outliers.
+            </li>
+            <li>
+              The best improvements around the visualization probably lie
+              outside the actual visualizations and more on auxiliary features.
+              For example, it would be nice to have an easy way to remove songs
+              from a playlist. Additionally, some "smart" recommendations around
+              songs to add or remove, as well as easy ways to visualize these
+              individual songs could be helpful.
+            </li>
+            <li>
+              Another major feature we weren't able to get to is visualizing
+              multiple individual songs on both the iqr chart and the radar
+              chart at once. As we played with the visualization, we decided it
+              would not be valuable enough to visualize multiple individual
+              songs at once.
+            </li>
+          </ul>
+        </div>
+        <div>
           <h2>Project Schedule</h2>
           <p>From 11/14 on</p>
           <ul>
