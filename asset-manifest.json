@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/vibe/static/css/main.ea3ad556.css",
+    "main.js": "/vibe/static/js/main.a7ef1914.js",
+    "static/media/joseph-sketch-1.png": "/vibe/static/media/joseph-sketch-1.8b750ae72d2a61456ce5.png",
+    "static/media/joseph-sketch-2.png": "/vibe/static/media/joseph-sketch-2.2441f1dfce32c389abdb.png",
+    "static/media/rob-sketch.png": "/vibe/static/media/rob-sketch.164078cdb75714fa42f8.png",
+    "static/media/songSelector.png": "/vibe/static/media/songSelector.7b7d33a4fe1982152fcc.png",
+    "static/media/selectedSong.png": "/vibe/static/media/selectedSong.eb989bf41bf78bbdd607.png",
+    "static/media/bubbleChart.png": "/vibe/static/media/bubbleChart.2f907af1b95f3f5d76ad.png",
+    "static/media/playlistSelector.png": "/vibe/static/media/playlistSelector.63913fd1cf4674de7a99.png",
+    "static/media/iqrDemo.png": "/vibe/static/media/iqrDemo.f18ab521270c00d7ca33.png",
+    "static/media/full-project-1.png": "/vibe/static/media/full-project-1.eab677ab054a8f150d3f.png",
+    "static/media/testCover1.jpg": "/vibe/static/media/testCover1.5a4212194f1c35de8d33.jpg",
+    "static/media/full-project-2.png": "/vibe/static/media/full-project-2.b701346761c1724d1f1a.png",
+    "static/media/scott-sketch-1.png": "/vibe/static/media/scott-sketch-1.84ff5e7ed3427c1d7139.png",
+    "static/media/scott-sketch-2.png": "/vibe/static/media/scott-sketch-2.4b8d6e4fb738f692f031.png",
+    "static/media/signInButton.png": "/vibe/static/media/signInButton.983b1a53991abc830815.png",
+    "index.html": "/vibe/index.html",
+    "main.ea3ad556.css.map": "/vibe/static/css/main.ea3ad556.css.map",
+    "main.a7ef1914.js.map": "/vibe/static/js/main.a7ef1914.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ea3ad556.css",
+    "static/js/main.a7ef1914.js"
+  ]
+}
