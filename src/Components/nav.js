@@ -93,7 +93,7 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
               </Button>
             ) : (
               <SpotifyAuth
-                redirectUri={`${window.location.href}/spotify-callback`}
+                redirectUri={`${window.location.origin}/spotify-callback`}
                 clientID="1a62dbf1e301488eb75e500e21603a0d"
                 scopes={[
                   Scopes.playlistReadPrivate,
@@ -122,19 +122,19 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <ListItemButton onClick={() => navigate("/vibe")}>
+            <ListItemButton onClick={() => navigate("/")}>
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItemButton>
-            <ListItemButton onClick={() => navigate("/vibe/process-book")}>
+            <ListItemButton onClick={() => navigate("/process-book")}>
               <ListItemIcon>
                 <MenuBookIcon />
               </ListItemIcon>
               <ListItemText primary="Process Book" />
             </ListItemButton>
-            <ListItemButton onClick={() => navigate("/vibe/video-demo")}>
+            <ListItemButton onClick={() => navigate("/video-demo")}>
               <ListItemIcon>
                 <VideoLibraryIcon />
               </ListItemIcon>

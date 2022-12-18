@@ -5,7 +5,7 @@ const SpotifyCallback = () => {
     window.location = "/"
   }
 
-  return (<SpotifyAuthListener onAccessToken={accessTokenHandler} />)
+  return <SpotifyAuthListener onAccessToken={accessTokenHandler} />
 }
 
 export { SpotifyCallback }
