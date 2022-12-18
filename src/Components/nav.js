@@ -93,7 +93,7 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
               </Button>
             ) : (
               <SpotifyAuth
-                redirectUri={`${window.location.origin}/spotify-callback`}
+                redirectUri={`${window.location.href}/spotify-callback`}
                 clientID="1a62dbf1e301488eb75e500e21603a0d"
                 scopes={[
                   Scopes.playlistReadPrivate,
