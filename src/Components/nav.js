@@ -49,7 +49,11 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
     <div>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open} sx={{backgroundColor: "#303030"}}>
+        <AppBar
+          position="absolute"
+          open={open}
+          sx={{ backgroundColor: "#303030" }}
+        >
           <Toolbar
             sx={{
               pr: "24px", // keep right padding when drawer closed
@@ -77,7 +81,14 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
               Spotify Vibe Check
             </Typography>
             {user ? (
-              <Button variant="contained" onClick={logout} sx={{backgroundColor: "#1db954", '&:hover': {backgroundColor: "#17863d"}}}>
+              <Button
+                variant="contained"
+                onClick={logout}
+                sx={{
+                  backgroundColor: "#1db954",
+                  "&:hover": { backgroundColor: "#17863d" },
+                }}
+              >
                 Logout
               </Button>
             ) : (
@@ -100,6 +111,7 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
               alignItems: "center",
               justifyContent: "flex-end",
               px: [1],
+              height: "100%",
               //   position: "fixed",
               //   zIndex: 1,
             }}
@@ -128,7 +140,11 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
               </ListItemIcon>
               <ListItemText primary="Video Demo" />
             </ListItemButton>
-            <ListItemButton onClick={() => navigate("/spotify-callback")}>
+            <ListItemButton
+              onClick={() =>
+                (window.location.href = "https://github.com/csex57/vibe")
+              }
+            >
               <ListItemIcon>
                 <GitHubIcon />
               </ListItemIcon>
@@ -144,16 +160,18 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
         </Drawer>
         <Box
           component="main"
-          sx={{
-            // backgroundColor: "red",
-            // backgroundColor: (theme) =>
-            //   theme.palette.mode === "light"
-            //     ? theme.palette.grey[100]
-            //     : theme.palette.grey[900],
-            // flexGrow: 1,
-            // height: "100vh",
-            // overflow: "auto",
-          }}
+          sx={
+            {
+              // backgroundColor: "red",
+              // backgroundColor: (theme) =>
+              //   theme.palette.mode === "light"
+              //     ? theme.palette.grey[100]
+              //     : theme.palette.grey[900],
+              // flexGrow: 1,
+              // height: "100vh",
+              // overflow: "auto",
+            }
+          }
         >
           {/* {children} */}
         </Box>

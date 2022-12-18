@@ -1,53 +1,19 @@
-import { useD3 } from "../hooks/useD3"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import * as d3 from "d3"
 import { Box, Typography } from "@mui/material"
-import { ticks } from "d3"
 
 const ArtistBubbles = ({ data, loading }) => {
   const [activeArtist, setActiveArtist] = useState(null)
   const [activeCount, setActiveCount] = useState(0)
-
-  useEffect(() => {
-    if (!loading) {
-      if (data) {
-        d3.select("#artist-bubbles-container").selectAll("*").remove()
-        display(data)
-      }
-    }
-  }, [data])
 
   // if (loading) {
   // 	return (
   // 		<Box>loading...</Box>
   // 	)
   // }
-  if (loading || !data) {
-    return <Box></Box>
-  }
-  return (
-    <Box>
-      <Box
-        id="artist-bubbles-header"
-        sx={{ width: "500px", textAlign: "center" }}
-      >
-        <h3 sx={{ marginBottom: "-20px", textAlign: "center" }}>
-          Arists in this Playlist
-        </h3>
-      </Box>
-      <Box sx={{ minHeight: "40px", width: "500px", textAlign: "center" }}>
-        {activeArtist && (
-          <Typography>
-            {activeArtist} - {activeCount} songs in this playlist
-          </Typography>
-        )}
-      </Box>
-      <Box id="artist-bubbles-container"></Box>
-    </Box>
-  )
 
   // bubbleChart creation function; instantiate new bubble chart given a DOM element to display it in and a dataset to visualise
-  function bubbleChart() {
+  const bubbleChart = useCallback(() => {
     // const width = 500;
     // const height = 500;
     const artistCount = Object.keys(data).length
@@ -66,7 +32,7 @@ const ArtistBubbles = ({ data, loading }) => {
     const centre = { x: width / 2, y: height / 2 }
 
     // strength to apply to the position forces
-    const forceStrength = 2
+    //const forceStrength = 2
 
     // these will be set in createNodes and chart functions
     let svg = null
@@ -75,9 +41,9 @@ const ArtistBubbles = ({ data, loading }) => {
     let nodes = []
 
     // charge is dependent on size of the bubble, so bigger towards the middle
-    function charge(d) {
+    /*function charge(d) {
       return Math.pow(d.radius, 2.0) * 0.01
-    }
+    }*/
 
     // create a force simulation and add forces to it
     const simulation = d3
@@ -218,17 +184,54 @@ const ArtistBubbles = ({ data, loading }) => {
     }
 
     return chart
-  }
+  }, [data])
 
   // function called once promise is resolved and data is loaded from csv
   // calls bubble chart function to display inside #vis div
-  function display(data) {
-    // new bubble chart instance
-    //console.log(data)
-    let myBubbleChart = bubbleChart()
 
-    myBubbleChart("#artist-bubbles-container", data)
+  const display = useCallback(
+    (data) => {
+      // new bubble chart instance
+      //console.log(data)
+      let myBubbleChart = bubbleChart()
+
+      myBubbleChart("#artist-bubbles-container", data)
+    },
+    [bubbleChart]
+  )
+
+  useEffect(() => {
+    if (!loading) {
+      if (data) {
+        d3.select("#artist-bubbles-container").selectAll("*").remove()
+        display(data)
+      }
+    }
+  }, [data, display, loading])
+
+  if (loading || !data) {
+    return <Box></Box>
   }
+  return (
+    <Box>
+      <Box
+        id="artist-bubbles-header"
+        sx={{ width: "500px", textAlign: "center" }}
+      >
+        <h3 sx={{ marginBottom: "-20px", textAlign: "center" }}>
+          Arists in this Playlist
+        </h3>
+      </Box>
+      <Box sx={{ minHeight: "40px", width: "500px", textAlign: "center" }}>
+        {activeArtist && (
+          <Typography>
+            {activeArtist} - {activeCount} songs in this playlist
+          </Typography>
+        )}
+      </Box>
+      <Box id="artist-bubbles-container"></Box>
+    </Box>
+  )
 }
 
 export default ArtistBubbles

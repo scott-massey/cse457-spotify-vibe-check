@@ -13,7 +13,7 @@ function ProcessBook() {
   return (
     <React.Fragment>
       <Box
-        sx={{ paddingLeft: "32px", paddingRight: "32px", paddingTop: "60px" }}
+        sx={{ paddingLeft: "82px", paddingRight: "32px", paddingTop: "60px" }}
       >
         <div>
           <h2>Basic Info</h2>
@@ -50,20 +50,17 @@ function ProcessBook() {
         <div>
           <h2>Project Objectives</h2>
           <p>
-            We are setting out to answer a few main questions. For any given
-            individual playlist, we want to better understand the holistic mood
-            and attributes of that album, and how individual songs and their
-            attributes affect this playlist evaluation. We are also interested
-            in accomplishing relative playlist comparisons to display the
-            differences between two people's music tastes in their respective
-            playlists. The benefits of our visualizations are users better
-            understanding their music taste, playlists, and songs that they
-            love. Users can also compare themselves to others to gauge their
-            music preferences and even find more songs or playlists that they
-            would like and otherwise wouldn't have been exposed to. These
-            visualizations will make the implicit and intuitive understanding an
-            individual has about their music preferences visible, resulting in a
-            new way to look at and approach their music taste.
+            Our project will allow users to visualize the audio features of
+            their Spotify playlists. The visualizations will help users
+            determine the “vibe” of their playlists. Additionally, different
+            visualizations will enable users to highlight individual songs at a
+            time, helping them determine if a song fits in with the rest of the
+            playlist.
+          </p>
+          <p>
+            Overall, this tool will help users better curate their own
+            playlists, helping sharpen their music taste and improve their
+            playlists.
           </p>
         </div>
         <div>
@@ -154,9 +151,8 @@ function ProcessBook() {
               attributes
             </li>
             <li>
-              An IQR line chart that displays a playlists/songs attributes
-              against other playlists/songs all relative to a median line down
-              the middle
+              An IQR line chart that displays the spread of a playlist's
+              attributes relative to a median line down the middle
             </li>
             <li>Spotify login/integration for data pulling</li>
             <li>
@@ -176,6 +172,10 @@ function ProcessBook() {
               Top artist and genre bubble charts for a users overall profile
             </li>
             <li>Video demo and how to operate the site</li>
+            <li>
+              Highlight individual songs on the IQR chart to visualize one
+              song's place in relation to a playlist
+            </li>
           </ul>
         </div>
         <div>
