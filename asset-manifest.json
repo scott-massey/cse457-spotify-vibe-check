@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/vibe/static/css/main.ea3ad556.css",
-    "main.js": "/vibe/static/js/main.a7ef1914.js",
+    "main.js": "/vibe/static/js/main.9ea621be.js",
     "static/media/joseph-sketch-1.png": "/vibe/static/media/joseph-sketch-1.8b750ae72d2a61456ce5.png",
     "static/media/joseph-sketch-2.png": "/vibe/static/media/joseph-sketch-2.2441f1dfce32c389abdb.png",
     "static/media/rob-sketch.png": "/vibe/static/media/rob-sketch.164078cdb75714fa42f8.png",
@@ -18,10 +18,10 @@
     "static/media/signInButton.png": "/vibe/static/media/signInButton.983b1a53991abc830815.png",
     "index.html": "/vibe/index.html",
     "main.ea3ad556.css.map": "/vibe/static/css/main.ea3ad556.css.map",
-    "main.a7ef1914.js.map": "/vibe/static/js/main.a7ef1914.js.map"
+    "main.9ea621be.js.map": "/vibe/static/js/main.9ea621be.js.map"
   },
   "entrypoints": [
     "static/css/main.ea3ad556.css",
-    "static/js/main.a7ef1914.js"
+    "static/js/main.9ea621be.js"
   ]
 }
