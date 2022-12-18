@@ -122,19 +122,19 @@ const NavigationWrapper = ({ children, openHelpModal, ...props }) => {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <ListItemButton onClick={() => navigate("/")}>
+            <ListItemButton onClick={() => navigate("/vibe")}>
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItemButton>
-            <ListItemButton onClick={() => navigate("/process-book")}>
+            <ListItemButton onClick={() => navigate("/vibe/process-book")}>
               <ListItemIcon>
                 <MenuBookIcon />
               </ListItemIcon>
               <ListItemText primary="Process Book" />
             </ListItemButton>
-            <ListItemButton onClick={() => navigate("/video-demo")}>
+            <ListItemButton onClick={() => navigate("/vibe/video-demo")}>
               <ListItemIcon>
                 <VideoLibraryIcon />
               </ListItemIcon>

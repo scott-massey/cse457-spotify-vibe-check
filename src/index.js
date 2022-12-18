@@ -40,10 +40,13 @@ const App = () => {
           <HelpModal modalOpen={modalOpen} closeHelpModal={closeHelpModal} />
           <Box sx={{ paddingLeft: "0px", marginTop: "-270px" }}>
             <Routes>
-              <Route path="/process-book" element={<ProcessBook />} />
-              <Route path="/video-demo" element={<VideoDemo />} />
-              <Route path="/spotify-callback" element={<SpotifyCallback />} />
-              <Route exact path="/" element={<Dashboard />} />
+              <Route path="/vibe/process-book" element={<ProcessBook />} />
+              <Route path="/vibe/video-demo" element={<VideoDemo />} />
+              <Route
+                path="/vibe/spotify-callback"
+                element={<SpotifyCallback />}
+              />
+              <Route exact path="/vibe" element={<Dashboard />} />
             </Routes>
           </Box>
         </BrowserRouter>
