@@ -16,12 +16,9 @@ const IQR = ({ featuresSummary, loading, activePlaylist, selectedTrack, loggedIn
   }
 
 
-  const selectedTrackFeatures2 = (loggedIn ? selectedTrackFeatures : obamaTrackFeatures[selectedTrack?.id])
-//   console.log(selectedTrackFeatures2)
   const svg = d3.select(ref.current)
   const width = svg.node()?.getBoundingClientRect().width
   const middle = (width + 80) / 2
-//   console.log({loggedIn, selectedTrack})
 
   if (!selectedTrack) {
     svg.select(".plot-area").selectAll(".selected-track").remove()
