@@ -4,13 +4,24 @@ import React, { useRef, useEffect } from "react"
 import * as d3 from "d3"
 
 import { useGetTrackFeatures } from "../../data"
+import { obamaTrackFeatures } from "../../data/obama/trackFeatures"
 
-const IQR = ({ featuresSummary, loading, activePlaylist, selectedTrack }) => {
+const IQR = ({ featuresSummary, loading, activePlaylist, selectedTrack, loggedIn }) => {
   const ref = useRef()
-  const { data: selectedTrackFeatures } = useGetTrackFeatures(selectedTrack?.id)
+  var { data: selectedTrackFeatures } = useGetTrackFeatures(selectedTrack?.id)
+
+  if (!loggedIn && activePlaylist) {
+	const obamaFeatures = obamaTrackFeatures[activePlaylist?.id].find(element => element.id === selectedTrack?.id);
+	selectedTrackFeatures = obamaFeatures
+  }
+
+
+  const selectedTrackFeatures2 = (loggedIn ? selectedTrackFeatures : obamaTrackFeatures[selectedTrack?.id])
+//   console.log(selectedTrackFeatures2)
   const svg = d3.select(ref.current)
   const width = svg.node()?.getBoundingClientRect().width
   const middle = (width + 80) / 2
+//   console.log({loggedIn, selectedTrack})
 
   if (!selectedTrack) {
     svg.select(".plot-area").selectAll(".selected-track").remove()

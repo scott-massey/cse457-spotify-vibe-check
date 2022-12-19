@@ -5,10 +5,13 @@ import IQR from "./iqrVis"
 import ArtistBubbles from "./ArtistBubbles"
 import Radar from "./radarChart"
 import SongSelector from "./SongSelector"
+import { useGetCurrentUserInfo } from "../../data"
+
 
 import "./index.css"
 
 const Dashboard = (props) => {
+	const { data: user } = useGetCurrentUserInfo()
   const [activePlaylist, setActivePlaylist] = useState(null)
   const [loadingPlaylist, setLoadingPlaylist] = useState(false)
   const [featuresSummary, setFeaturesSummary] = useState(null)
@@ -38,6 +41,7 @@ const Dashboard = (props) => {
               setFeaturesSummary={setFeaturesSummary}
               setArtistCounts={setArtistCounts}
               setSelectedTrack={setSelectedTrack}
+			  loggedIn={user}
             />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -56,6 +60,7 @@ const Dashboard = (props) => {
                   activePlaylist={activePlaylist}
                   loading={loadingPlaylist}
                   selectedTrack={selectedTrack}
+				  loggedIn={user}
                 />
               </Box>
               <Box sx={{ height: "100%", width: "35%" }}>
@@ -64,6 +69,7 @@ const Dashboard = (props) => {
                   activePlaylist={activePlaylist}
                   loading={loadingPlaylist}
                   selectedTrack={selectedTrack}
+				  loggedIn={user}
                 />
               </Box>
             </Box>

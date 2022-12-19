@@ -3,10 +3,23 @@
 import React, { useEffect, useRef, useMemo } from "react"
 import * as d3 from "d3"
 import { useGetTrackFeatures } from "../../data"
+import { obamaTrackFeatures } from "../../data/obama/trackFeatures"
 
-const Radar = ({ selectedTrack }) => {
+
+// featuresSummary={featuresSummary}
+// activePlaylist={activePlaylist}
+// loading={loadingPlaylist}
+// selectedTrack={selectedTrack}
+// loggedIn={user}
+
+const Radar = ({ featuresSummary, loading, activePlaylist, selectedTrack, loggedIn }) => {
   const [height, setHeight] = React.useState(0)
-  const { data: features } = useGetTrackFeatures(selectedTrack?.id)
+  var { data: features } = useGetTrackFeatures(selectedTrack?.id)
+
+  if (!loggedIn && activePlaylist) {
+	const obamaFeatures = obamaTrackFeatures[activePlaylist?.id].find(element => element.id === selectedTrack?.id);
+	features = obamaFeatures
+  }
 
   const ref = useRef()
 
