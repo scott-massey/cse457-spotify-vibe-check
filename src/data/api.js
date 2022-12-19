@@ -31,6 +31,18 @@ const getPlaylist = async (playlistId) => {
   }
 }
 
+const getPlaylistTracks = async (playlistId) => {
+	if (!playlistId) return null
+	try {
+	  const res = await spotifyAxios.get(`/playlists/${playlistId}/tracks`)
+	  return res.data
+	} catch (error) {
+	  console.error(error)
+	}
+}
+
+
+
 const getCurrentUserPlaylists = async () => {
   try {
     const userId = await getUserId()
@@ -90,6 +102,7 @@ export {
   getCurrentUserInfo,
   logout,
   getPlaylist,
+  getPlaylistTracks,
   getTracksFeatures,
   getTrackFeatures,
 }

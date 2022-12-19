@@ -6,7 +6,7 @@ import * as d3 from "d3"
 
 // Data
 import { useCurrentUserPlaylists, useGetCurrentUserInfo } from "../../data"
-import { getPlaylist, getTracksFeatures } from "../../data/api"
+import { getPlaylist, getTracksFeatures, getPlaylistTracks } from "../../data/api"
 import { obamaAlbums } from "../../data/obama/albums"
 import { obamaTracks } from "../../data/obama/tracks"
 import { obamaTrackFeatures } from "../../data/obama/trackFeatures"
@@ -30,6 +30,8 @@ function PlaylistSelector({
 }) {
   const { data: { items = [] } = {} } = useCurrentUserPlaylists()
   const { data: user } = useGetCurrentUserInfo()
+
+
 
   // from https://stackoverflow.com/questions/59516720/return-summary-statistics-from-multiple-arrays
   function calculateValues(d, key) {
@@ -60,6 +62,15 @@ function PlaylistSelector({
 
   async function HandleClick(playlistId) {
     setLoadingPlaylist(true)
+
+	// const sampleData = await getPlaylist('37i9dQZF1DX7qK8ma5wgG1')
+	// console.log(sampleData)
+
+	// const sampleTracks = await getPlaylistTracks('37i9dQZF1DX7qK8ma5wgG1')
+	// console.log(sampleTracks)
+
+	// const sampleFeatures = await getTracksFeatures(sampleData.tracks.items)
+	// console.log(sampleFeatures)
 
     const playlist = await getPlaylist(playlistId)
     const tracks = playlist.tracks.items
@@ -97,6 +108,8 @@ function PlaylistSelector({
 
     const tracks = obamaTracks[playlist.id]
     const trackFeatures = obamaTrackFeatures[playlist.id]
+	console.log(tracks)
+	console.log(trackFeatures)
 
     const artistCounts = {}
     tracks.map((key) => {
@@ -123,6 +136,7 @@ function PlaylistSelector({
   }
 
   function shortenName(name) {
+	if (!name) return ""
     if (name.substring(0, 12) === "Barack Obama") {
       name = name.substring(7)
     }
