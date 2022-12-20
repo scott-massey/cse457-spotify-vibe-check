@@ -154,8 +154,10 @@ function ProcessBook() {
 		  </div>
 		  <h3>Design Evolution</h3>
 			<div>
-				<p>We were able to fully design a lot of the charts we initially wanted to use. A lot of the decisions we made 
-					came through making the data more legible and easier to look at. We were ok with displaying the same information 
+				<p>We were able to fully design a lot of the charts we initially wanted to use. Fundementally, we felt conifident that the three
+           charts we used would be the most effective in providing insights on the user data. The evolution of these charts was mainly centered around
+           simplification and readability. Most changes were trial and error fixes that helped to cut fat and create a clean experience for the users. Specifically, 
+					we made the data more legible and easier to look at. We were ok with displaying the same information 
 					multiple times in order to make it easier to read. 
 				</p>
 			</div>
