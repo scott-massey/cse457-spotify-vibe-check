@@ -152,6 +152,13 @@ function ProcessBook() {
 		  	<img src={initialIqr} alt="init-iqr" width="500" />
 		  	<img src={initialRadial} alt="init-radial" width="500" />
 		  </div>
+		  <h3>Design Evolution</h3>
+			<div>
+				<p>We were able to fully design a lot of the charts we initially wanted to use. A lot of the decisions we made 
+					came through making the data more legible and easier to look at. We were ok with displaying the same information 
+					multiple times in order to make it easier to read. 
+				</p>
+			</div>
         </div>
         <div>
           <h2>Must-Have Features</h2>
