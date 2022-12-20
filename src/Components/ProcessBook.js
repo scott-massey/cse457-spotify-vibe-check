@@ -8,6 +8,10 @@ import josephSketch2 from "../Resources/img/joseph-sketch-2.png"
 import robSketch from "../Resources/img/rob-sketch.png"
 import fullProject1 from "../Resources/img/full-project-1.png"
 import fullProject2 from "../Resources/img/full-project-2.png"
+import initialPlaylistSelector from "../Resources/img/initial-playlist-selector.jpeg"
+import initialIqr from "../Resources/img/initial-iqr.jpeg"
+import initialRadial from "../Resources/img/initial-radial.jpeg"
+
 
 function ProcessBook() {
   return (
@@ -142,6 +146,12 @@ function ProcessBook() {
             <img src={fullProject1} alt="full-project" width="500" />
             <img src={fullProject2} alt="full-project" width="500" />
           </div>
+		  <h3>Initial Designs</h3>
+		  <div>
+		  	<img src={initialPlaylistSelector} alt="playlist-selector" width="500" />
+		  	<img src={initialIqr} alt="init-iqr" width="500" />
+		  	<img src={initialRadial} alt="init-radial" width="500" />
+		  </div>
         </div>
         <div>
           <h2>Must-Have Features</h2>
